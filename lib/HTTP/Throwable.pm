@@ -25,7 +25,7 @@ sub build_headers {
     my ($self, $body) = @_;
     [
         'Content-Type'   => $self->content_type,
-        'Content-Length' => Plack::Util::content_length($body),
+        'Content-Length' => length $body,
     ]
 }
 
