@@ -1,6 +1,8 @@
 package HTTP::Throwable;
 use Moose;
 
+use Plack::Util ();
+
 with 'Throwable';
 
 has 'status_code' => (
@@ -23,7 +25,7 @@ sub build_headers {
     my ($self, $body) = @_;
     [
         'Content-Type'   => $self->content_type,
-        'Content-Length' => length $body,
+        'Content-Length' => Plack::Util::content_length($body),
     ]
 }
 
@@ -47,7 +49,7 @@ no Moose; 1;
 
 __END__
 
-# ABSTRACT: A set of HTTP 1.1 exception objects
+# ABSTRACT: A set of strongly-typed, PSGI-friendly HTTP 1.1 exception classes
 
 =head1 SYNOPSIS
 
@@ -86,12 +88,13 @@ __END__
 This is the base object for all the HTTP::Throwable subclasses.
 While you can easily use this object in your code, you likely want
 to use the appropriate subclass for the given error as they will
-provide the status-code, reason and enforce any required headers.
+provide the status-code, reason and enforce any required headers,
+see the L<SUBCLASSES> seciton below for more details.
 
 NOTE: We have also included some of the documentation from the
 HTTP 1.1 spec where appropriate.
 
-=head2 Stack Traces
+=head2 Note about Stack Traces
 
 It should be noted that even though these are all exception objects,
 only the 500 Internal Server Error subclass actually includes the

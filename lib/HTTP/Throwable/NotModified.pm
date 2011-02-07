@@ -1,6 +1,8 @@
 package HTTP::Throwable::NotModified;
 use Moose;
 
+use Plack::Util ();
+
 extends 'HTTP::Throwable';
 
 has '+status_code' => ( default => 304 );
@@ -27,7 +29,9 @@ around 'as_psgi' => sub {
     my $next = shift;
     my $self = shift;
     my $psgi = $self->$next();
-    $psgi->[2] = []; # MUST NOT have a message body, see below
+    # MUST NOT have a message body, see below
+    Plack::Util::header_set( $psgi->[1], 'Content-Length' => 0 );
+    $psgi->[2] = [];
     $psgi;
 };
 
