@@ -12,14 +12,14 @@ BEGIN {
 }
 
 isa_ok(exception {
-    HTTP::Throwable->throw( status_code => 500, message => 'Internal Server Error' );
+    HTTP::Throwable->throw( status_code => 500, reason => 'Internal Server Error' );
 }, 'HTTP::Throwable');
 
 does_ok(exception {
-    HTTP::Throwable->throw( status_code => 500, message => 'Internal Server Error' );
+    HTTP::Throwable->throw( status_code => 500, reason => 'Internal Server Error' );
 }, 'Throwable');
 
-my $e = HTTP::Throwable->new( status_code => 500, message => 'Internal Server Error' );
+my $e = HTTP::Throwable->new( status_code => 500, reason => 'Internal Server Error' );
 
 is($e->as_string, '500 Internal Server Error', '... got the right string transformation');
 is_deeply(
