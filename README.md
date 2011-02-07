@@ -1,7 +1,7 @@
 # HTTP-Throwable
 
-This is a set of exception classes corresponding to the
-HTTP error status code (4xx-5xx) and the redirection
+This is a set of PSGI friendly exception classes corresponding
+to the HTTP error status code (4xx-5xx) and the redirection
 codes (3xx).
 
 ## See Also
