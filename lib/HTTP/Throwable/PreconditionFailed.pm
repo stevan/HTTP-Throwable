@@ -1,5 +1,6 @@
 package HTTP::Throwable::PreconditionFailed;
 use Moose;
+use MooseX::StrictConstructor;
 
 extends 'HTTP::Throwable';
 

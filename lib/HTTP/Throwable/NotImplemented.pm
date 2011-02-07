@@ -1,5 +1,6 @@
 package HTTP::Throwable::NotImplemented;
 use Moose;
+use MooseX::StrictConstructor;
 
 extends 'HTTP::Throwable';
 

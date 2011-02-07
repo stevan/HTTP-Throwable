@@ -1,5 +1,6 @@
 package HTTP::Throwable;
 use Moose;
+use MooseX::StrictConstructor;
 
 use Plack::Util ();
 
@@ -65,6 +66,7 @@ __END__
   # ... it is more useful for subclassing
   package InternalServerError;
   use Moose;
+use MooseX::StrictConstructor;
 
   extends 'HTTP::Throwable';
      with 'StackTrace::Auto'; # it is 500 so include the stack trace

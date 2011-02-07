@@ -1,5 +1,6 @@
 package HTTP::Throwable::HTTPVersionNotSupported;
 use Moose;
+use MooseX::StrictConstructor;
 
 extends 'HTTP::Throwable';
 

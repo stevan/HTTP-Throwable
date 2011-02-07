@@ -1,5 +1,6 @@
 package HTTP::Throwable::Gone;
 use Moose;
+use MooseX::StrictConstructor;
 
 extends 'HTTP::Throwable';
 

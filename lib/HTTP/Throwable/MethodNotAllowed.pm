@@ -1,5 +1,6 @@
 package HTTP::Throwable::MethodNotAllowed;
 use Moose;
+use MooseX::StrictConstructor;
 use Moose::Util::TypeConstraints;
 
 use List::AllUtils qw[ uniq ];

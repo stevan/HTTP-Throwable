@@ -1,5 +1,6 @@
 package HTTP::Throwable::InternalServerError;
 use Moose;
+use MooseX::StrictConstructor;
 
 extends 'HTTP::Throwable';
    with 'StackTrace::Auto';

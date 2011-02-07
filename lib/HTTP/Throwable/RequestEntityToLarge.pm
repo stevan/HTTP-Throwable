@@ -1,9 +1,10 @@
 package HTTP::Throwable::RequestEntityToLarge;
 use Moose;
+use MooseX::StrictConstructor;
 
 extends 'HTTP::Throwable';
 
-has '+status_code' => ( default => 412 );
+has '+status_code' => ( default => 413 );
 has '+reason'      => ( default => 'Request Entity To Large' );
 
 has 'retry_after' => ( is => 'ro', isa => 'Str' );
@@ -24,7 +25,7 @@ no Moose; 1;
 
 __END__
 
-# ABSTRACT: 412 Request Entity To Large
+# ABSTRACT: 413 Request Entity To Large
 
 =head1 DESCRIPTION
 

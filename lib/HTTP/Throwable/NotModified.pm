@@ -1,5 +1,6 @@
 package HTTP::Throwable::NotModified;
 use Moose;
+use MooseX::StrictConstructor;
 
 use Plack::Util ();
 
@@ -21,7 +22,7 @@ around 'build_headers' => sub {
     my $self    = shift;
     my $headers = $self->$next( @_ );
     push @$headers => ('Location' => $self->redirect_location);
-    push @$headers => $self->additional_headers;
+    push @$headers => @{ $self->additional_headers };
     $headers;
 };
 
