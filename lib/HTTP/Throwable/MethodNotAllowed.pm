@@ -2,6 +2,8 @@ package HTTP::Throwable::MethodNotAllowed;
 use Moose;
 use Moose::Util::TypeConstraints;
 
+use List::AllUtils qw[ uniq ];
+
 extends 'HTTP::Throwable';
 
 enum 'HTTP::Throwable::Type::Methods' => qw[
@@ -10,12 +12,16 @@ enum 'HTTP::Throwable::Type::Methods' => qw[
     TRACE CONNECT
 ];
 
+subtype 'HTTP::Throwable::Type::MethodList'
+    => as 'ArrayRef'
+    => where { (scalar uniq @{$_}) == (scalar @{$_}) };
+
 has '+status_code' => ( default => 405 );
 has '+reason'      => ( default => 'Method Not Allowed' );
 
 has 'valid_methods' => (
     is       => 'ro',
-    isa      => 'ArrayRef[HTTP::Throwable::Type::Methods]',
+    isa      => 'HTTP::Throwable::Type::MethodList',
     required => 1
 );
 
@@ -47,7 +53,7 @@ resource.
 =attr valid_methods
 
 This is an ArrayRef of HTTP methods, it is required and the HTTP
-methods will be type checked to ensure validity.
+methods will be type checked to ensure validity and uniqueness.
 
 =head1 SEE ALSO
 
