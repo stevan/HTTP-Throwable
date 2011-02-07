@@ -4,7 +4,7 @@ use Moose;
 extends 'HTTP::Throwable';
 
 has '+status_code' => ( default => 401 );
-has '+reason'     => ( default => 'Unauthorized' );
+has '+reason'      => ( default => 'Unauthorized' );
 
 has 'www_authenticate' => (
     is       => 'ro',

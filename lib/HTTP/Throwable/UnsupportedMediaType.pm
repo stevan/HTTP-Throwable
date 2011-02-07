@@ -4,7 +4,7 @@ use Moose;
 extends 'HTTP::Throwable';
 
 has '+status_code' => ( default => 415 );
-has '+reason'     => ( default => 'Unsupported Media Type' );
+has '+reason'      => ( default => 'Unsupported Media Type' );
 
 __PACKAGE__->meta->make_immutable;
 

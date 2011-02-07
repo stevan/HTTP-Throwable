@@ -4,7 +4,7 @@ use Moose;
 extends 'HTTP::Throwable';
 
 has '+status_code' => ( default => 412 );
-has '+reason'     => ( default => 'Precondition Failed' );
+has '+reason'      => ( default => 'Precondition Failed' );
 
 __PACKAGE__->meta->make_immutable;
 

@@ -4,7 +4,7 @@ use Moose;
 extends 'HTTP::Throwable';
 
 has '+status_code' => ( default => 412 );
-has '+reason'     => ( default => 'Request Entity To Large' );
+has '+reason'      => ( default => 'Request Entity To Large' );
 
 has 'retry_after' => ( is => 'ro', isa => 'Str' );
 

@@ -4,7 +4,7 @@ use Moose;
 extends 'HTTP::Throwable';
 
 has '+status_code' => ( default => 414 );
-has '+reason'     => ( default => 'Request-URI Too Long' );
+has '+reason'      => ( default => 'Request-URI Too Long' );
 
 __PACKAGE__->meta->make_immutable;
 

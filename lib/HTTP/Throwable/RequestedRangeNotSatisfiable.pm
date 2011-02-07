@@ -4,7 +4,7 @@ use Moose;
 extends 'HTTP::Throwable';
 
 has '+status_code' => ( default => 416 );
-has '+reason'     => ( default => 'Requested Range Not Satisfiable' );
+has '+reason'      => ( default => 'Requested Range Not Satisfiable' );
 
 has 'content_range' => ( is => 'ro', isa => 'Str' );
 

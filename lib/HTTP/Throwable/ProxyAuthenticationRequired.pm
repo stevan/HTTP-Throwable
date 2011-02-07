@@ -4,7 +4,7 @@ use Moose;
 extends 'HTTP::Throwable';
 
 has '+status_code' => ( default => 407 );
-has '+reason'     => ( default => 'Proxy Authentication Required' );
+has '+reason'      => ( default => 'Proxy Authentication Required' );
 
 has 'proxy_authenticate' => (
     is       => 'ro',

@@ -11,7 +11,7 @@ enum 'HTTP::Throwable::Type::Methods' => qw[
 ];
 
 has '+status_code' => ( default => 405 );
-has '+reason'     => ( default => 'Method Not Allowed' );
+has '+reason'      => ( default => 'Method Not Allowed' );
 
 has 'valid_methods' => (
     is       => 'ro',
