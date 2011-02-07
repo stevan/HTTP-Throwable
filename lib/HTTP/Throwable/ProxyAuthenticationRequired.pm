@@ -37,8 +37,6 @@ return a Proxy-Authenticate header field containing a challenge applicable
 to the proxy for the requested resource. The client MAY repeat the request
 with a suitable Proxy-Authorization header field.
 
-=head1 ATTRIBUTES
-
 =attr proxy_authenticate
 
 This is a required string that will be used to populate the 'Proxy-Authenticate'

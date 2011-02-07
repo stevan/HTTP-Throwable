@@ -50,8 +50,6 @@ understand the 307 status. Therefore, the note SHOULD contain
 the information necessary for a user to repeat the original
 request on the new URI.
 
-=head1 ATTRIBUTES
-
 =attr temp_location
 
 This is a required string, which will be used in the Location header

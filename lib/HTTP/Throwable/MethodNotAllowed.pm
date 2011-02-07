@@ -49,8 +49,6 @@ resource identified by the Request-URI. The response MUST include
 an Allow header containing a list of valid methods for the requested
 resource.
 
-=head1 ATTRIBUTES
-
 =attr valid_methods
 
 This is an ArrayRef of HTTP methods, it is required and the HTTP

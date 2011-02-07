@@ -88,8 +88,6 @@ If a cache uses a received 304 response to update a cache entry,
 the cache MUST update the entry to reflect any new field values
 given in the response.
 
-=head1 ATTRIBUTES
-
 =attr redirect_location
 
 This is a required string, which will be used in the Location header

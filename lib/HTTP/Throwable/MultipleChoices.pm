@@ -47,8 +47,6 @@ the specific URI for that representation in the Location field; user agents
 MAY use the Location field value for automatic redirection. This response is
 cacheable unless indicated otherwise.
 
-=head1 ATTRIBUTES
-
 =attr preferred_location
 
 This is an optional string, which, if supplied, will be used in the Location

@@ -38,8 +38,6 @@ If the condition is temporary, the server SHOULD include a
 Retry-After header field to indicate that it is temporary and
 after what time the client MAY try again.
 
-=head1 ATTRIBUTES
-
 =attr retry_after
 
 This is an optional string to be used to add a Retry-After header

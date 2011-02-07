@@ -105,8 +105,6 @@ actually care about the stack trace and therefore do not the extra
 overhead. If you do find you want a stack trace though, it is as
 simple as subclassing and applying the L<StackTrace::Auto> role.
 
-=head1 ATTRIBUTES
-
 =attr status_code
 
 This is the status code integer as specified in the HTTP spec.
@@ -118,8 +116,6 @@ This is the reason phrase as specified in the HTTP spec.
 =attr message
 
 This is an additional message string that can be supplied
-
-=head1 METHODS
 
 =method as_string
 

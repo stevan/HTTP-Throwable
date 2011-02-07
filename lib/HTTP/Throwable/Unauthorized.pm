@@ -42,8 +42,6 @@ authentication at least once, then the user SHOULD be presented the entity
 that was given in the response, since that entity might include relevant
 diagnostic information.
 
-=head1 ATTRIBUTES
-
 =attr www_authenticate
 
 This is a required string that will be used to populate the 'WWW-Authenticate'

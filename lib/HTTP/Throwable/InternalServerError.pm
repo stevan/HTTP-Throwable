@@ -32,8 +32,6 @@ __END__
 The server encountered an unexpected condition which prevented it
 from fulfilling the request.
 
-=head1 ATTRIBUTES
-
 =attr show_stack_trace
 
 This is a boolean attribute which by default is true and indicates
