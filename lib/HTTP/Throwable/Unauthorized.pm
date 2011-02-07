@@ -16,7 +16,7 @@ around 'build_headers' => sub {
     my $next    = shift;
     my $self    = shift;
     my $headers = $self->$next( @_ );
-    push @$headers => [ 'WWW-Authenticate' => $self->www_authenticate ];
+    push @$headers => ('WWW-Authenticate' => $self->www_authenticate);
     $headers;
 };
 

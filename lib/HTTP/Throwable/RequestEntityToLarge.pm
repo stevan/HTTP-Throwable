@@ -13,7 +13,7 @@ around 'build_headers' => sub {
     my $self    = shift;
     my $headers = $self->$next( @_ );
     if ( my $retry = $self->retry_after ) {
-        push @$headers => [ 'Retry-After' => $retry ];
+        push @$headers => ('Retry-After' => $retry);
     }
     $headers;
 };

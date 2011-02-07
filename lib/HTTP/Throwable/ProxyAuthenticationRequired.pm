@@ -16,7 +16,7 @@ around 'build_headers' => sub {
     my $next    = shift;
     my $self    = shift;
     my $headers = $self->$next( @_ );
-    push @$headers => [ 'Proxy-Authenticate' => $self->proxy_authenticate ];
+    push @$headers => ('Proxy-Authenticate' => $self->proxy_authenticate);
     $headers;
 };
 

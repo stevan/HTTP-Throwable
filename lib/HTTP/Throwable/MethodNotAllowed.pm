@@ -23,7 +23,7 @@ around 'build_headers' => sub {
     my $next    = shift;
     my $self    = shift;
     my $headers = $self->$next( @_ );
-    push @$headers => [ 'Allow' => join "," => @{ $self->valid_methods } ];
+    push @$headers => ('Allow' => join "," => @{ $self->valid_methods });
     $headers;
 };
 

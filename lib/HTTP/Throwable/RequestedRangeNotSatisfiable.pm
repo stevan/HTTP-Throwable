@@ -13,7 +13,7 @@ around 'build_headers' => sub {
     my $self    = shift;
     my $headers = $self->$next( @_ );
     if ( my $content_range = $self->content_range ) {
-        push @$headers => [ 'Content-Range' => $content_range ];
+        push @$headers => ('Content-Range' => $content_range);
     }
     $headers;
 };
