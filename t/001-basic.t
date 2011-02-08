@@ -35,4 +35,18 @@ is_deeply(
     '... got the right PSGI transformation'
 );
 
+is("$e", '500 Internal Server Error', '... got the right string overload');
+is_deeply(
+    $e->(),
+    [
+        500,
+        [
+            'Content-Type'   => 'text/plain',
+            'Content-Length' => 25,
+        ],
+        [ '500 Internal Server Error' ]
+    ],
+    '... got the right &{} overload transformation'
+);
+
 done_testing;

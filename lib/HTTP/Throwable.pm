@@ -2,6 +2,11 @@ package HTTP::Throwable;
 use Moose;
 use MooseX::StrictConstructor;
 
+use overload
+    '&{}' => 'to_app',
+    '""'  => 'as_string',
+    fallback => 1;
+
 use Plack::Util ();
 
 with 'Throwable';
