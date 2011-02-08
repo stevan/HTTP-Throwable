@@ -1,4 +1,23 @@
 Revision history for Perl extension HTTP::Throwable
 
+0.002 Tues. Feb. 8, 2011
+    - normalize *_location attributes to all be
+      called location, since that is the name of the
+      header
+    - any time we allow additional headers to be
+      passed in, the attribute is now called
+      additional_headers instead of whatever it was
+      before (usually cache_headers)
+    - change the valid_methods attribute in
+      HTTP::Throwable::MethodNotAllowed to be just
+      allow (which is what the header is)
+        - improved the type check on this as well
+    - make the exceptions also function as PSGI apps
+        - add to_app method
+        - support &{} overload
+        - added tests for this
+    - overload stringification
+        - added tests for this
+
 0.001 Tues. Feb. 8, 2011
     - first release
