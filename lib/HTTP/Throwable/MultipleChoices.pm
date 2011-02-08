@@ -7,14 +7,14 @@ extends 'HTTP::Throwable';
 has '+status_code' => ( default => 300 );
 has '+reason'      => ( default => 'Multiple Choices' );
 
-has 'preferred_location' => ( is => 'ro', isa => 'Str' );
+has 'location' => ( is => 'ro', isa => 'Str' );
 
 around 'build_headers' => sub {
     my $next    = shift;
     my $self    = shift;
     my $headers = $self->$next( @_ );
-    if ( my $preferred_location = $self->preferred_location ) {
-        push @$headers => ('Location' => $preferred_location);
+    if ( my $location = $self->location ) {
+        push @$headers => ('Location' => $location);
     }
     $headers;
 };
@@ -47,7 +47,7 @@ the specific URI for that representation in the Location field; user agents
 MAY use the Location field value for automatic redirection. This response is
 cacheable unless indicated otherwise.
 
-=attr preferred_location
+=attr location
 
 This is an optional string, which, if supplied, will be used in the Location
 header when creating a PSGI response.

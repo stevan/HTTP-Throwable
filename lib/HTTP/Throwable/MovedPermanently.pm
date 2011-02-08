@@ -7,7 +7,7 @@ extends 'HTTP::Throwable';
 has '+status_code' => ( default => 301 );
 has '+reason'      => ( default => 'Moved Permanently' );
 
-has 'new_location' => (
+has 'location' => (
     is       => 'ro',
     isa      => 'Str',
     required => 1,
@@ -17,7 +17,7 @@ around 'build_headers' => sub {
     my $next    = shift;
     my $self    = shift;
     my $headers = $self->$next( @_ );
-    push @$headers => ('Location' => $self->new_location);
+    push @$headers => ('Location' => $self->location);
     $headers;
 };
 
@@ -43,7 +43,7 @@ response. Unless the request method was HEAD, the entity of the
 response SHOULD contain a short hypertext note with a hyperlink to
 the new URI(s).
 
-=attr new_location
+=attr location
 
 This is a required string, which will be used in the Location header
 when creating a PSGI response.

@@ -12,14 +12,14 @@ BEGIN {
 }
 
 isa_ok(exception {
-    HTTP::Throwable::NotModified->throw( redirect_location => '/test', additional_headers => [ 'Expires' => 'Soonish' ] );
+    HTTP::Throwable::NotModified->throw( location => '/test', additional_headers => [ 'Expires' => 'Soonish' ] );
 }, 'HTTP::Throwable');
 
 does_ok(exception {
-    HTTP::Throwable::NotModified->throw( redirect_location => '/test', additional_headers => [ 'Expires' => 'Soonish' ] );
+    HTTP::Throwable::NotModified->throw( location => '/test', additional_headers => [ 'Expires' => 'Soonish' ] );
 }, 'Throwable');
 
-my $e = HTTP::Throwable::NotModified->new( redirect_location => '/test', additional_headers => [ 'Expires' => 'Soonish' ] );
+my $e = HTTP::Throwable::NotModified->new( location => '/test', additional_headers => [ 'Expires' => 'Soonish' ] );
 
 my $body = '304 Not Modified';
 

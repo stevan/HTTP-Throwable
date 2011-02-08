@@ -12,14 +12,14 @@ BEGIN {
 }
 
 isa_ok(exception {
-    HTTP::Throwable::MovedPermanently->throw( new_location => '/test' );
+    HTTP::Throwable::MovedPermanently->throw( location => '/test' );
 }, 'HTTP::Throwable');
 
 does_ok(exception {
-    HTTP::Throwable::MovedPermanently->throw( new_location => '/test' );
+    HTTP::Throwable::MovedPermanently->throw( location => '/test' );
 }, 'Throwable');
 
-my $e = HTTP::Throwable::MovedPermanently->new( new_location => '/test' );
+my $e = HTTP::Throwable::MovedPermanently->new( location => '/test' );
 
 my $body = '301 Moved Permanently';
 

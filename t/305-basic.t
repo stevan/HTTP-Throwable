@@ -12,14 +12,14 @@ BEGIN {
 }
 
 isa_ok(exception {
-    HTTP::Throwable::UseProxy->throw( proxy_location => '/proxy/test' );
+    HTTP::Throwable::UseProxy->throw( location => '/proxy/test' );
 }, 'HTTP::Throwable');
 
 does_ok(exception {
-    HTTP::Throwable::UseProxy->throw( proxy_location => '/proxy/test' );
+    HTTP::Throwable::UseProxy->throw( location => '/proxy/test' );
 }, 'Throwable');
 
-my $e = HTTP::Throwable::UseProxy->new( proxy_location => '/proxy/test' );
+my $e = HTTP::Throwable::UseProxy->new( location => '/proxy/test' );
 
 my $body = '305 Use Proxy';
 

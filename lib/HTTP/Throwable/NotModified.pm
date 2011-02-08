@@ -9,7 +9,7 @@ extends 'HTTP::Throwable';
 has '+status_code' => ( default => 304 );
 has '+reason'      => ( default => 'Not Modified' );
 
-has 'redirect_location' => (
+has 'location' => (
     is       => 'ro',
     isa      => 'Str',
     required => 1,
@@ -21,8 +21,10 @@ around 'build_headers' => sub {
     my $next    = shift;
     my $self    = shift;
     my $headers = $self->$next( @_ );
-    push @$headers => ('Location' => $self->redirect_location);
-    push @$headers => @{ $self->additional_headers };
+    push @$headers => ('Location' => $self->location);
+    if ( my $additional_headers = $self->additional_headers ) {
+        push @$headers => @$additional_headers;
+    }
     $headers;
 };
 
@@ -88,7 +90,7 @@ If a cache uses a received 304 response to update a cache entry,
 the cache MUST update the entry to reflect any new field values
 given in the response.
 
-=attr redirect_location
+=attr location
 
 This is a required string, which will be used in the Location header
 when creating a PSGI response.

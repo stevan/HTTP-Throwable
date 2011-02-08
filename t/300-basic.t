@@ -12,14 +12,14 @@ BEGIN {
 }
 
 isa_ok(exception {
-    HTTP::Throwable::MultipleChoices->throw( preferred_location => '/test' );
+    HTTP::Throwable::MultipleChoices->throw( location => '/test' );
 }, 'HTTP::Throwable');
 
 does_ok(exception {
-    HTTP::Throwable::MultipleChoices->throw( preferred_location => '/test' );
+    HTTP::Throwable::MultipleChoices->throw( location => '/test' );
 }, 'Throwable');
 
-my $e = HTTP::Throwable::MultipleChoices->new( preferred_location => '/test' );
+my $e = HTTP::Throwable::MultipleChoices->new( location => '/test' );
 
 my $body = '300 Multiple Choices';
 

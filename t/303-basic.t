@@ -12,14 +12,14 @@ BEGIN {
 }
 
 isa_ok(exception {
-    HTTP::Throwable::SeeOther->throw( redirect_location => '/test' );
+    HTTP::Throwable::SeeOther->throw( location => '/test' );
 }, 'HTTP::Throwable');
 
 does_ok(exception {
-    HTTP::Throwable::SeeOther->throw( redirect_location => '/test' );
+    HTTP::Throwable::SeeOther->throw( location => '/test' );
 }, 'Throwable');
 
-my $e = HTTP::Throwable::SeeOther->new( redirect_location => '/test' );
+my $e = HTTP::Throwable::SeeOther->new( location => '/test' );
 
 my $body = '303 See Other';
 

@@ -12,14 +12,14 @@ BEGIN {
 }
 
 isa_ok(exception {
-    HTTP::Throwable::Found->throw( temp_location => '/test', cache_headers => [ 'Expires' => 'Soonish' ]);
+    HTTP::Throwable::Found->throw( location => '/test', additional_headers => [ 'Expires' => 'Soonish' ]);
 }, 'HTTP::Throwable');
 
 does_ok(exception {
-    HTTP::Throwable::Found->throw( temp_location => '/test', cache_headers => [ 'Expires' => 'Soonish' ]);
+    HTTP::Throwable::Found->throw( location => '/test', additional_headers => [ 'Expires' => 'Soonish' ]);
 }, 'Throwable');
 
-my $e = HTTP::Throwable::Found->new( temp_location => '/test', cache_headers => [ 'Expires' => 'Soonish' ]);
+my $e = HTTP::Throwable::Found->new( location => '/test', additional_headers => [ 'Expires' => 'Soonish' ]);
 
 my $body = '302 Found';
 

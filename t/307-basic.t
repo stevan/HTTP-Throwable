@@ -12,14 +12,14 @@ BEGIN {
 }
 
 isa_ok(exception {
-    HTTP::Throwable::TemporaryRedirect->throw( temp_location => '/test', cache_headers => [ 'Expires' => 'Soonish' ] );
+    HTTP::Throwable::TemporaryRedirect->throw( location => '/test', additional_headers => [ 'Expires' => 'Soonish' ] );
 }, 'HTTP::Throwable');
 
 does_ok(exception {
-    HTTP::Throwable::TemporaryRedirect->throw( temp_location => '/test', cache_headers => [ 'Expires' => 'Soonish' ] );
+    HTTP::Throwable::TemporaryRedirect->throw( location => '/test', additional_headers => [ 'Expires' => 'Soonish' ] );
 }, 'Throwable');
 
-my $e = HTTP::Throwable::TemporaryRedirect->new( temp_location => '/test', cache_headers => [ 'Expires' => 'Soonish' ] );
+my $e = HTTP::Throwable::TemporaryRedirect->new( location => '/test', additional_headers => [ 'Expires' => 'Soonish' ] );
 
 my $body = '307 Temporary Redirect';
 
