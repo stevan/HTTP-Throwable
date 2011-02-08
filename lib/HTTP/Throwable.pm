@@ -66,7 +66,6 @@ __END__
   # ... it is more useful for subclassing
   package InternalServerError;
   use Moose;
-use MooseX::StrictConstructor;
 
   extends 'HTTP::Throwable';
      with 'StackTrace::Auto'; # it is 500 so include the stack trace
@@ -81,20 +80,38 @@ use MooseX::StrictConstructor;
   };
 
   # and better yet, just use the provided subclasses
+  # see the SUBCLASSES section below for a list
   HTTP::Throwable::InternalServerError->throw(
       message => 'Something has gone very wrong!'
   );
 
 =head1 DESCRIPTION
 
-This is the base object for all the HTTP::Throwable subclasses.
-While you can easily use this object in your code, you likely want
-to use the appropriate subclass for the given error as they will
-provide the status-code, reason and enforce any required headers,
-see the L<SUBCLASSES> seciton below for more details.
+This module a set of strongy-typed, PSGI-friendly exception classes
+corresponding to the HTTP error status code (4xx-5xx) as well as
+the redirection codes (3xx).
+
+This particular package is the base object for all the HTTP::Throwable
+subclasses. While you can easily use this object in your code, you
+likely want to use the appropriate subclass for the given error as
+they will provide the status-code, reason and enforce any required
+headers, see the L<SUBCLASSES> seciton below for more details.
 
 NOTE: We have also included some of the documentation from the
 HTTP 1.1 spec where appropriate.
+
+=head2 HTTP::Exception
+
+This module is similar to HTTP::Exception with a few, well uhm,
+exceptions. First, we are not implementing the 1xx and 2xx status
+codes, it is this authors opinion that those not being errors or
+an exception control flow (redirection) should not be handled with
+exceptions. And secondly, this module is very PSGI friendly in that
+it can turn your exception into a PSGI response with just a
+method call.
+
+All that said HTTP::Exception is a wonderful module and if that
+better suits your needs, then by all means, use it.
 
 =head2 Note about Stack Traces
 

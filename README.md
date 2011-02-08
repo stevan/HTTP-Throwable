@@ -4,17 +4,6 @@ This is a set of strongy-typed, PSGI-friendly exception
 classes corresponding to the HTTP error status code
 (4xx-5xx) as well as the redirection codes (3xx).
 
-## See Also
-
-This module is similar to HTTP::Exception with a few,
-well uhm, exceptions. First, we are not implementing
-the 1xx and 2xx status codes, it is this authors opinion
-that those not being errors or an exception control flow
-(redirection) should not be handled with exceptions. And
-secondly, this module is very PSGI friendly in that it
-can turn your exception into a PSGI response with just
-a method call.
-
 ## Installation
 
 To install this module type the following:
@@ -29,7 +18,10 @@ To install this module type the following:
 This module requires these other modules and libraries:
 
     Moose
+    MooseX::StrictConstructor
     Throwable
+    Plack
+    List::AllUtils
 
 ## Copyright and License
 
