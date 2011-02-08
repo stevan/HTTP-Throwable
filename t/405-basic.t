@@ -12,14 +12,14 @@ BEGIN {
 }
 
 isa_ok(exception {
-    HTTP::Throwable::MethodNotAllowed->throw( valid_methods => [ 'GET', 'PUT'] );
+    HTTP::Throwable::MethodNotAllowed->throw( allow => [ 'GET', 'PUT' ] );
 }, 'HTTP::Throwable');
 
 does_ok(exception {
-    HTTP::Throwable::MethodNotAllowed->throw( valid_methods => [ 'GET', 'PUT'] );
+    HTTP::Throwable::MethodNotAllowed->throw( allow => [ 'GET', 'PUT' ] );
 }, 'Throwable');
 
-my $e = HTTP::Throwable::MethodNotAllowed->new( valid_methods => [ 'GET', 'PUT'] );
+my $e = HTTP::Throwable::MethodNotAllowed->new( allow => [ 'GET', 'PUT' ] );
 
 my $body = '405 Method Not Allowed';
 
@@ -37,6 +37,14 @@ is_deeply(
     ],
     '... got the right PSGI transformation'
 );
+
+like(exception {
+    HTTP::Throwable::MethodNotAllowed->throw( allow => [ 'GET', 'PUT', 'OPTIONS', 'PUT' ] );
+}, qr/Attribute \(allow\) does not pass the type constraint/, '... type check works');
+
+like(exception {
+    HTTP::Throwable::MethodNotAllowed->throw( allow => [ 'GET', 'PUT', 'OPTIONS', 'TEST' ] );
+}, qr/Attribute \(allow\) does not pass the type constraint/, '... type check works');
 
 
 done_testing;

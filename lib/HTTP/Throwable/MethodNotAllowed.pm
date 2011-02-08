@@ -20,9 +20,9 @@ subtype 'HTTP::Throwable::Type::MethodList'
 has '+status_code' => ( default => 405 );
 has '+reason'      => ( default => 'Method Not Allowed' );
 
-has 'valid_methods' => (
+has 'allow' => (
     is       => 'ro',
-    isa      => 'HTTP::Throwable::Type::MethodList',
+    isa      => 'HTTP::Throwable::Type::MethodList[ HTTP::Throwable::Type::Methods ]',
     required => 1
 );
 
@@ -30,7 +30,7 @@ around 'build_headers' => sub {
     my $next    = shift;
     my $self    = shift;
     my $headers = $self->$next( @_ );
-    push @$headers => ('Allow' => join "," => @{ $self->valid_methods });
+    push @$headers => ('Allow' => join "," => @{ $self->allow });
     $headers;
 };
 
@@ -49,7 +49,7 @@ resource identified by the Request-URI. The response MUST include
 an Allow header containing a list of valid methods for the requested
 resource.
 
-=attr valid_methods
+=attr allow
 
 This is an ArrayRef of HTTP methods, it is required and the HTTP
 methods will be type checked to ensure validity and uniqueness.
