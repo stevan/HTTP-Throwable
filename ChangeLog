@@ -1,5 +1,9 @@
 Revision history for Perl extension HTTP::Throwable
 
+{{$NEXT}}
+    - introspection for status code via is_redirect, is_client_error and
+      is_server_error (Brian Cassidy)
+
 0.002 Tues. Feb. 8, 2011
     - normalize *_location attributes to all be
       called location, since that is the name of the

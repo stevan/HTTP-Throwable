@@ -49,4 +49,25 @@ is_deeply(
     '... got the right &{} overload transformation'
 );
 
+{
+    my $e = HTTP::Throwable->new( status_code => 500, reason => 'Internal Server Error' );
+    ok( !$e->is_redirect );
+    ok( !$e->is_client_error );
+    ok( $e->is_server_error );
+}
+
+{
+    my $e = HTTP::Throwable->new( status_code => 403, reason => 'Forbidden' );
+    ok( !$e->is_redirect );
+    ok( $e->is_client_error );
+    ok( !$e->is_server_error );
+}
+
+{
+    my $e = HTTP::Throwable->new( status_code => 302, reason => 'Found' );
+    ok( $e->is_redirect );
+    ok( !$e->is_client_error );
+    ok( !$e->is_server_error );
+}
+
 done_testing;
