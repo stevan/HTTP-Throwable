@@ -1,6 +1,6 @@
 Revision history for Perl extension HTTP::Throwable
 
-{{$NEXT}}
+0.003 Fri. Feb. 11, 2011
     - introspection for status code via is_redirect, is_client_error and
       is_server_error (Brian Cassidy)
 
