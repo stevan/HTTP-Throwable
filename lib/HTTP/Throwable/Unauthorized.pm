@@ -9,15 +9,21 @@ has '+reason'      => ( default => 'Unauthorized' );
 
 has 'www_authenticate' => (
     is       => 'ro',
-    isa      => 'Str',
+    isa      => 'Str | ArrayRef[ Str ]',
     required => 1,
 );
 
 around 'build_headers' => sub {
-    my $next    = shift;
-    my $self    = shift;
-    my $headers = $self->$next( @_ );
-    push @$headers => ('WWW-Authenticate' => $self->www_authenticate);
+    my $next     = shift;
+    my $self     = shift;
+    my $headers  = $self->$next( @_ );
+    my $www_auth = $self->www_authenticate;
+    if ( ref $www_auth ) {
+        push @$headers => (map { ('WWW-Authenticate' => $_) } @$www_auth);
+    }
+    else {
+        push @$headers => ('WWW-Authenticate' => $www_auth );
+    }
     $headers;
 };
 
@@ -44,8 +50,8 @@ diagnostic information.
 
 =attr www_authenticate
 
-This is a required string that will be used to populate the 'WWW-Authenticate'
-header when creating a PSGI response.
+This is a required string or array of string that will be used to populate
+the 'WWW-Authenticate' header when creating a PSGI response.
 
 =head1 SEE ALSO
 
