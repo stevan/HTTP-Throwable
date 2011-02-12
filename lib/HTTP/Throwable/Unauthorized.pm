@@ -51,7 +51,7 @@ diagnostic information.
 =attr www_authenticate
 
 This is a required string or array of string that will be used to populate
-the 'WWW-Authenticate' header when creating a PSGI response.
+the 'WWW-Authenticate' header(s) when creating a PSGI response.
 
 =head1 SEE ALSO
 
