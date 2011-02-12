@@ -1,5 +1,9 @@
 Revision history for Perl extension HTTP::Throwable
 
+0.004 Sat. Feb. 12, 2011
+    - allowing more than one WWW-Authenticate header
+      (thanks to chansen for pointing this out)
+
 0.003 Fri. Feb. 11, 2011
     - introspection for status code via is_redirect, is_client_error and
       is_server_error (Brian Cassidy)
