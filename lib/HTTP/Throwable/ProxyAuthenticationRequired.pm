@@ -9,7 +9,7 @@ has '+reason'      => ( default => 'Proxy Authentication Required' );
 
 has 'proxy_authenticate' => (
     is       => 'ro',
-    isa      => 'Str',
+    isa      => 'Str | ArrayRef[ Str ]',
     required => 1,
 );
 
@@ -17,7 +17,13 @@ around 'build_headers' => sub {
     my $next    = shift;
     my $self    = shift;
     my $headers = $self->$next( @_ );
-    push @$headers => ('Proxy-Authenticate' => $self->proxy_authenticate);
+    my $proxy_auth = $self->proxy_authenticate;
+    if ( ref $proxy_auth ) {
+        push @$headers => (map { ('Proxy-Authenticate' => $_) } @$proxy_auth);
+    }
+    else {
+        push @$headers => ('Proxy-Authenticate' => $proxy_auth );
+    }
     $headers;
 };
 
@@ -39,8 +45,8 @@ with a suitable Proxy-Authorization header field.
 
 =attr proxy_authenticate
 
-This is a required string that will be used to populate the 'Proxy-Authenticate'
-header when creating a PSGI response.
+This is a required string or array of strings that will be used to populate
+the 'Proxy-Authenticate' header(s) when creating a PSGI response.
 
 =head1 SEE ALSO
 
