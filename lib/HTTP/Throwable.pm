@@ -55,20 +55,17 @@ sub to_app {
 }
 
 sub is_redirect {
-    my $self   = shift;
-    my $status = $self->status_code;
+    my $status = (shift)->status_code;
     return $status >= 300 && $status < 400;
 }
 
 sub is_client_error {
-    my $self   = shift;
-    my $status = $self->status_code;
+    my $status = (shift)->status_code;
     return $status >= 400 && $status < 500;
 }
 
 sub is_server_error {
-    my $self   = shift;
-    my $status = $self->status_code;
+    my $status = (shift)->status_code;
     return $status >= 500 && $status < 600;
 }
 
