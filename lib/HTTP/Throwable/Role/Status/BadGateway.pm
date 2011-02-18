@@ -1,4 +1,4 @@
-package HTTP::Throwable::BadGateway;
+package HTTP::Throwable::Role::Status::BadGateway;
 use Moose;
 use MooseX::StrictConstructor;
 

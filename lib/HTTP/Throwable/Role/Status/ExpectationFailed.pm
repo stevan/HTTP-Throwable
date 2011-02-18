@@ -1,4 +1,4 @@
-package HTTP::Throwable::ExpectationFailed;
+package HTTP::Throwable::Role::Status::ExpectationFailed;
 use Moose;
 use MooseX::StrictConstructor;
 

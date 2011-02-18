@@ -1,4 +1,4 @@
-package HTTP::Throwable::LengthRequired;
+package HTTP::Throwable::Role::Status::LengthRequired;
 use Moose;
 use MooseX::StrictConstructor;
 

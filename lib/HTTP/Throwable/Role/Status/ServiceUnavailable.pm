@@ -1,4 +1,4 @@
-package HTTP::Throwable::ServiceUnavailable;
+package HTTP::Throwable::Role::Status::ServiceUnavailable;
 use Moose;
 use MooseX::StrictConstructor;
 

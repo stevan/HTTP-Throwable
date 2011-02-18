@@ -1,4 +1,4 @@
-package HTTP::Throwable::BadRequest;
+package HTTP::Throwable::Role::Status::BadRequest;
 use Moose;
 use MooseX::StrictConstructor;
 

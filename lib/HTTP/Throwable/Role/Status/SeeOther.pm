@@ -1,4 +1,4 @@
-package HTTP::Throwable::SeeOther;
+package HTTP::Throwable::Role::Status::SeeOther;
 use Moose;
 use MooseX::StrictConstructor;
 

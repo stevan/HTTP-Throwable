@@ -1,4 +1,4 @@
-package HTTP::Throwable::ProxyAuthenticationRequired;
+package HTTP::Throwable::Role::Status::ProxyAuthenticationRequired;
 use Moose;
 use MooseX::StrictConstructor;
 

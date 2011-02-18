@@ -1,4 +1,4 @@
-package HTTP::Throwable::RequestEntityToLarge;
+package HTTP::Throwable::Role::Status::RequestEntityToLarge;
 use Moose;
 use MooseX::StrictConstructor;
 

@@ -1,4 +1,4 @@
-package HTTP::Throwable::Found;
+package HTTP::Throwable::Role::Status::Found;
 use Moose;
 use MooseX::StrictConstructor;
 

@@ -1,4 +1,4 @@
-package HTTP::Throwable::HTTPVersionNotSupported;
+package HTTP::Throwable::Role::Status::HTTPVersionNotSupported;
 use Moose;
 use MooseX::StrictConstructor;
 

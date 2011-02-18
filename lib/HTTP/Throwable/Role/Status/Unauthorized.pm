@@ -1,4 +1,4 @@
-package HTTP::Throwable::Unauthorized;
+package HTTP::Throwable::Role::Status::Unauthorized;
 use Moose;
 use MooseX::StrictConstructor;
 

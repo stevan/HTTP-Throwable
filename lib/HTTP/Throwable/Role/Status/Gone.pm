@@ -1,4 +1,4 @@
-package HTTP::Throwable::Gone;
+package HTTP::Throwable::Role::Status::Gone;
 use Moose;
 use MooseX::StrictConstructor;
 

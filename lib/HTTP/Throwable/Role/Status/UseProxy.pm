@@ -1,4 +1,4 @@
-package HTTP::Throwable::UseProxy;
+package HTTP::Throwable::Role::Status::UseProxy;
 use Moose;
 use MooseX::StrictConstructor;
 

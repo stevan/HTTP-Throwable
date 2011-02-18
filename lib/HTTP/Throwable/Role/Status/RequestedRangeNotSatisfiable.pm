@@ -1,4 +1,4 @@
-package HTTP::Throwable::RequestedRangeNotSatisfiable;
+package HTTP::Throwable::Role::Status::RequestedRangeNotSatisfiable;
 use Moose;
 use MooseX::StrictConstructor;
 

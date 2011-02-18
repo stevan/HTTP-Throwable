@@ -1,4 +1,4 @@
-package HTTP::Throwable::NotAcceptable;
+package HTTP::Throwable::Role::Status::NotAcceptable;
 use Moose;
 use MooseX::StrictConstructor;
 

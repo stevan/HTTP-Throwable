@@ -1,4 +1,4 @@
-package HTTP::Throwable::Conflict;
+package HTTP::Throwable::Role::Status::Conflict;
 use Moose;
 use MooseX::StrictConstructor;
 

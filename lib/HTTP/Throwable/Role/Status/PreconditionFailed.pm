@@ -1,4 +1,4 @@
-package HTTP::Throwable::PreconditionFailed;
+package HTTP::Throwable::Role::Status::PreconditionFailed;
 use Moose;
 use MooseX::StrictConstructor;
 

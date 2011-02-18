@@ -1,4 +1,4 @@
-package HTTP::Throwable::MultipleChoices;
+package HTTP::Throwable::Role::Status::MultipleChoices;
 use Moose;
 use MooseX::StrictConstructor;
 

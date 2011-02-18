@@ -1,4 +1,4 @@
-package HTTP::Throwable::ImATeapot;
+package HTTP::Throwable::Role::Status::ImATeapot;
 use Moose;
 use MooseX::StrictConstructor;
 

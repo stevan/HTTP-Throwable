@@ -1,4 +1,4 @@
-package HTTP::Throwable::TemporaryRedirect;
+package HTTP::Throwable::Role::Status::TemporaryRedirect;
 use Moose;
 use MooseX::StrictConstructor;
 

@@ -1,4 +1,4 @@
-package HTTP::Throwable::MethodNotAllowed;
+package HTTP::Throwable::Role::Status::MethodNotAllowed;
 use Moose;
 use MooseX::StrictConstructor;
 use Moose::Util::TypeConstraints;

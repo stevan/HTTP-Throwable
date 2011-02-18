@@ -1,4 +1,4 @@
-package HTTP::Throwable::GatewayTimeout;
+package HTTP::Throwable::Role::Status::GatewayTimeout;
 use Moose;
 use MooseX::StrictConstructor;
 

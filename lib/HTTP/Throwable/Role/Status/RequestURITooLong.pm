@@ -1,4 +1,4 @@
-package HTTP::Throwable::RequestURITooLong;
+package HTTP::Throwable::Role::Status::RequestURITooLong;
 use Moose;
 use MooseX::StrictConstructor;
 

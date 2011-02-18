@@ -1,4 +1,4 @@
-package HTTP::Throwable::NotModified;
+package HTTP::Throwable::Role::Status::NotModified;
 use Moose;
 use MooseX::StrictConstructor;
 

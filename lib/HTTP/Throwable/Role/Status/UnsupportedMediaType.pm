@@ -1,4 +1,4 @@
-package HTTP::Throwable::UnsupportedMediaType;
+package HTTP::Throwable::Role::Status::UnsupportedMediaType;
 use Moose;
 use MooseX::StrictConstructor;
 

@@ -1,4 +1,4 @@
-package HTTP::Throwable::NotImplemented;
+package HTTP::Throwable::Role::Status::NotImplemented;
 use Moose;
 use MooseX::StrictConstructor;
 

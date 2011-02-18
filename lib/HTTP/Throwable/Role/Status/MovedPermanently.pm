@@ -1,4 +1,4 @@
-package HTTP::Throwable::MovedPermanently;
+package HTTP::Throwable::Role::Status::MovedPermanently;
 use Moose;
 use MooseX::StrictConstructor;
 

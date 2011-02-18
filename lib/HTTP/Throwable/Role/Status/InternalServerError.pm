@@ -1,4 +1,4 @@
-package HTTP::Throwable::InternalServerError;
+package HTTP::Throwable::Role::Status::InternalServerError;
 use Moose;
 use MooseX::StrictConstructor;
 

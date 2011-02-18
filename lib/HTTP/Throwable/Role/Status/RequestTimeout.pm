@@ -1,4 +1,4 @@
-package HTTP::Throwable::RequestTimeout;
+package HTTP::Throwable::Role::Status::RequestTimeout;
 use Moose;
 use MooseX::StrictConstructor;
 
