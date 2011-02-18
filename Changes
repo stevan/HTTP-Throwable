@@ -1,6 +1,7 @@
 Revision history for Perl extension HTTP::Throwable
 
 0.005 Sat. Feb. 12, 2011
+    - add proper support for RFC 2324 (thanks rjbs)
     - allowing more than one Proxy-Authenticate header
       (thanks to chansen for pointing this out, though he
       could have mentioned it before I released 0.004 :P)
