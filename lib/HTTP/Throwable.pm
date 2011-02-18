@@ -307,6 +307,8 @@ to any request method.
 
 L<http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html>
 
+L<http://www.flickr.com/photos/apelad/sets/72157594388426362/with/304196358/>
+
 
 
 
