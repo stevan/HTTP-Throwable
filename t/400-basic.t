@@ -7,35 +7,11 @@ use Test::More;
 use Test::Fatal;
 use Test::Moose;
 
-BEGIN {
-    use_ok('HTTP::Throwable::BadRequest');
-}
+use t::lib::Test::HT;
 
-isa_ok(exception {
-    HTTP::Throwable::BadRequest->throw();
-}, 'HTTP::Throwable');
-
-does_ok(exception {
-    HTTP::Throwable::BadRequest->throw();
-}, 'Throwable');
-
-my $e = HTTP::Throwable::BadRequest->new();
-
-my $body = '400 Bad Request';
-
-is($e->as_string, $body, '... got the right string transformation');
-is_deeply(
-    $e->as_psgi,
-    [
-        400,
-        [
-            'Content-Type'   => 'text/plain',
-            'Content-Length' => length $body,
-        ],
-        [ $body ]
-    ],
-    '... got the right PSGI transformation'
-);
-
+ht_test(BadRequest => {}, {
+  code   => 400,
+  reason => 'Bad Request',
+});
 
 done_testing;

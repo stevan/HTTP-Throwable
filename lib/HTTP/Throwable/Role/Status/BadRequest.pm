@@ -1,15 +1,13 @@
 package HTTP::Throwable::Role::Status::BadRequest;
-use Moose;
-use MooseX::StrictConstructor;
+use Moose::Role;
 
-extends 'HTTP::Throwable';
+with 'HTTP::Throwable';
 
-has '+status_code' => ( default => 400 );
-has '+reason'      => ( default => 'Bad Request' );
+sub default_status_code { 400 }
 
-__PACKAGE__->meta->make_immutable;
+sub default_reason { 'Bad Request' }
 
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 

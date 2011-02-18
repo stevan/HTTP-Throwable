@@ -1,5 +1,5 @@
 package HTTP::Throwable;
-use Moose;
+use Moose::Role;
 use MooseX::StrictConstructor;
 
 use overload
@@ -14,13 +14,14 @@ with 'Throwable';
 has 'status_code' => (
     is       => 'ro',
     isa      => 'Int',
-    required => 1,
+    builder  => 'default_status_code',
 );
 
 has 'reason' => (
     is       => 'ro',
     isa      => 'Str',
     required => 1,
+    builder  => 'default_reason',
 );
 
 has 'message' => ( is => 'ro', isa => 'Str' );
@@ -69,9 +70,7 @@ sub is_server_error {
     return $status >= 500 && $status < 600;
 }
 
-__PACKAGE__->meta->make_immutable;
-
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 
@@ -306,11 +305,3 @@ to any request method.
 =head1 SEE ALSO
 
 L<http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html>
-
-L<http://www.flickr.com/photos/apelad/sets/72157594388426362/with/304196358/>
-
-
-
-
-
-
