@@ -1,15 +1,15 @@
 package HTTP::Throwable::Role::Status::ExpectationFailed;
-use Moose;
-use MooseX::StrictConstructor;
+use Moose::Role;
 
-extends 'HTTP::Throwable';
+with(
+  'HTTP::Throwable',
+  'HTTP::Throwable::Role::BoringText',
+);
 
-has '+status_code' => ( default => 417 );
-has '+reason'      => ( default => 'Expectation Failed' );
+sub default_status_code { 417 }
+sub default_reason      { 'Expectation Failed' }
 
-__PACKAGE__->meta->make_immutable;
-
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 

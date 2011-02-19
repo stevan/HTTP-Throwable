@@ -1,11 +1,13 @@
 package HTTP::Throwable::Role::Status::RequestedRangeNotSatisfiable;
-use Moose;
-use MooseX::StrictConstructor;
+use Moose::Role;
 
-extends 'HTTP::Throwable';
+with(
+  'HTTP::Throwable',
+  'HTTP::Throwable::Role::BoringText',
+);
 
-has '+status_code' => ( default => 416 );
-has '+reason'      => ( default => 'Requested Range Not Satisfiable' );
+sub default_status_code { 416 }
+sub default_reason      { 'Requested Range Not Satisfiable' }
 
 has 'content_range' => ( is => 'ro', isa => 'Str' );
 
@@ -19,9 +21,7 @@ around 'build_headers' => sub {
     $headers;
 };
 
-__PACKAGE__->meta->make_immutable;
-
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 
