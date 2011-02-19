@@ -60,27 +60,34 @@ sub ht_test {
     }
 
     if (defined $extra->{code} and defined $extra->{reason}) {
-      my $body = $extra->{body} || join q{ }, @$extra{ qw(code reason) };
+      my $status_line = join q{ }, @$extra{ qw(code reason) };
 
-      cmp_deeply($exception->as_string, $body, "got the expected body");
+      is($exception->status_line, $status_line, "expected status line");
+
+      my $body = exists $extra->{body} ? $extra->{body} : $status_line;
+
+      my $as_string = exists $extra->{as_string} ? $extra->{as_string} : $body;
+      cmp_deeply(
+        $exception->as_string,
+        $as_string,
+        "got the expected as_string",
+      );
 
       my $length = $extra->{length} // length $body;
 
-      unless (defined $extra->{body}) {
-        cmp_deeply(
-            $exception->as_psgi,
-            [
-                $extra->{code},
-                bag(
-                    'Content-Type'   => 'text/plain',
-                    'Content-Length' => $length,
-                    @{ $extra->{headers} || [] },
-                ),
-                [ $body ]
-            ],
-            '... got the right PSGI transformation'
-        );
-      }
+      cmp_deeply(
+          $exception->as_psgi,
+          [
+              $extra->{code},
+              bag(
+                  'Content-Type'   => 'text/plain',
+                  'Content-Length' => $length,
+                  @{ $extra->{headers} || [] },
+              ),
+              [ defined $body ? $body : () ]
+          ],
+          '... got the right PSGI transformation'
+      );
     }
 
     if ($extra->{assert}) {

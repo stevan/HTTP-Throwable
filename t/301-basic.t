@@ -1,42 +1,16 @@
 #!/usr/bin/perl
-
 use strict;
 use warnings;
 
 use Test::More;
-use Test::Fatal;
-use Test::Moose;
+use t::lib::Test::HT;
 
-BEGIN {
-    use_ok('HTTP::Throwable::MovedPermanently');
-}
-
-isa_ok(exception {
-    HTTP::Throwable::MovedPermanently->throw( location => '/test' );
-}, 'HTTP::Throwable');
-
-does_ok(exception {
-    HTTP::Throwable::MovedPermanently->throw( location => '/test' );
-}, 'Throwable');
-
-my $e = HTTP::Throwable::MovedPermanently->new( location => '/test' );
-
-my $body = '301 Moved Permanently';
-
-is($e->as_string, $body, '... got the right string transformation');
-is_deeply(
-    $e->as_psgi,
-    [
-        301,
-        [
-            'Content-Type'   => 'text/plain',
-            'Content-Length' => length $body,
-            'Location'       => '/test'
-        ],
-        [ $body ]
-    ],
-    '... got the right PSGI transformation'
-);
-
+ht_test(MovedPermanently => { location => '/test' }, {
+  code    => 301,
+  reason  => 'Moved Permanently',
+  headers => [
+    Location => '/test',
+  ],
+});
 
 done_testing;

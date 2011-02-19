@@ -3,7 +3,10 @@ use Moose::Role;
 
 use Plack::Util ();
 
-with 'HTTP::Throwable';
+with(
+  'HTTP::Throwable',
+  'HTTP::Throwable::Role::BoringText',
+);
 
 sub default_status_code { 304 }
 sub default_reason      { 'Not Modified' }
@@ -37,9 +40,7 @@ around 'as_psgi' => sub {
     $psgi;
 };
 
-__PACKAGE__->meta->make_immutable;
-
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 

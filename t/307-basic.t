@@ -4,40 +4,23 @@ use strict;
 use warnings;
 
 use Test::More;
-use Test::Fatal;
-use Test::Moose;
+use t::lib::Test::HT;
 
-BEGIN {
-    use_ok('HTTP::Throwable::TemporaryRedirect');
-}
-
-isa_ok(exception {
-    HTTP::Throwable::TemporaryRedirect->throw( location => '/test', additional_headers => [ 'Expires' => 'Soonish' ] );
-}, 'HTTP::Throwable');
-
-does_ok(exception {
-    HTTP::Throwable::TemporaryRedirect->throw( location => '/test', additional_headers => [ 'Expires' => 'Soonish' ] );
-}, 'Throwable');
-
-my $e = HTTP::Throwable::TemporaryRedirect->new( location => '/test', additional_headers => [ 'Expires' => 'Soonish' ] );
-
-my $body = '307 Temporary Redirect';
-
-is($e->as_string, $body, '... got the right string transformation');
-is_deeply(
-    $e->as_psgi,
-    [
-        307,
-        [
-            'Content-Type'   => 'text/plain',
-            'Content-Length' => length $body,
-            'Location'       => '/test',
-            'Expires'        => 'Soonish'
-        ],
-        [ $body ]
+ht_test(
+  TemporaryRedirect => {
+    location => '/test',
+    additional_headers => [
+      'Expires' => 'Soonish'
+    ]
+  },
+  {
+    code    => 307,
+    reason  => 'Temporary Redirect',
+    headers => [
+      'Location' => '/test',
+      'Expires'  => 'Soonish',
     ],
-    '... got the right PSGI transformation'
+  },
 );
-
 
 done_testing;

@@ -1,11 +1,13 @@
 package HTTP::Throwable::Role::Status::UseProxy;
-use Moose;
-use MooseX::StrictConstructor;
+use Moose::Role;
 
-extends 'HTTP::Throwable';
+with(
+  'HTTP::Throwable',
+  'HTTP::Throwable::Role::BoringText',
+);
 
-has '+status_code' => ( default => 305 );
-has '+reason'      => ( default => 'Use Proxy' );
+sub default_status_code { 305 }
+sub default_reason      { 'Use Proxy' }
 
 has 'location' => (
     is       => 'ro',
@@ -21,9 +23,7 @@ around 'build_headers' => sub {
     $headers;
 };
 
-__PACKAGE__->meta->make_immutable;
-
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 

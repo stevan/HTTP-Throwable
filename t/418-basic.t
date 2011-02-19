@@ -16,6 +16,7 @@ for my $this (
   ht_test(ImATeapot => { short => $this->[0], stout => $this->[1] }, {
     code   => 418,
     reason => q{I'm a teapot},
+    length => ignore(),
     body   => re($this->[2]),
   });
 }

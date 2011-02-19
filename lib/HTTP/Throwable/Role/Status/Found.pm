@@ -1,11 +1,14 @@
 package HTTP::Throwable::Role::Status::Found;
-use Moose;
+use Moose::Role;
 use MooseX::StrictConstructor;
 
-extends 'HTTP::Throwable';
+with(
+  'HTTP::Throwable',
+  'HTTP::Throwable::Role::BoringText',
+);
 
-has '+status_code' => ( default => 302 );
-has '+reason'      => ( default => 'Found' );
+sub default_status_code { 302 }
+sub default_reason      { 'Found' }
 
 has 'location' => (
     is       => 'ro',
@@ -26,9 +29,7 @@ around 'build_headers' => sub {
     $headers;
 };
 
-__PACKAGE__->meta->make_immutable;
-
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 

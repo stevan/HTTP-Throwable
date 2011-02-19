@@ -1,42 +1,16 @@
 #!/usr/bin/perl
-
 use strict;
 use warnings;
 
 use Test::More;
-use Test::Fatal;
-use Test::Moose;
+use t::lib::Test::HT;
 
-BEGIN {
-    use_ok('HTTP::Throwable::UseProxy');
-}
-
-isa_ok(exception {
-    HTTP::Throwable::UseProxy->throw( location => '/proxy/test' );
-}, 'HTTP::Throwable');
-
-does_ok(exception {
-    HTTP::Throwable::UseProxy->throw( location => '/proxy/test' );
-}, 'Throwable');
-
-my $e = HTTP::Throwable::UseProxy->new( location => '/proxy/test' );
-
-my $body = '305 Use Proxy';
-
-is($e->as_string, $body, '... got the right string transformation');
-is_deeply(
-    $e->as_psgi,
-    [
-        305,
-        [
-            'Content-Type'   => 'text/plain',
-            'Content-Length' => length $body,
-            'Location'       => '/proxy/test',
-        ],
-        [ $body ]
-    ],
-    '... got the right PSGI transformation'
-);
-
+ht_test(UseProxy => { location => '/proxy/test' }, {
+  code    => 305,
+  reason  => 'Use Proxy',
+  headers => [
+    Location => '/proxy/test',
+  ],
+});
 
 done_testing;
