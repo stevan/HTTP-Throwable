@@ -1,15 +1,12 @@
 package HTTP::Throwable::Role::Status::NotImplemented;
-use Moose;
-use MooseX::StrictConstructor;
+use Moose::Role;
 
-extends 'HTTP::Throwable';
+with 'HTTP::Throwable';
 
-has '+status_code' => ( default => 501 );
-has '+reason'      => ( default => 'Not Implemented' );
+sub default_status_code { 501 }
+sub default_reason      { 'Not Implemented' }
 
-__PACKAGE__->meta->make_immutable;
-
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 

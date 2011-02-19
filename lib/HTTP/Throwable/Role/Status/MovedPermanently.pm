@@ -3,7 +3,7 @@ use Moose::Role;
 
 with(
   'HTTP::Throwable',
-  'HTTP::Throwable::Role::BoringBody',
+  'HTTP::Throwable::Role::BoringText',
 );
 
 sub default_status_code { 301 }

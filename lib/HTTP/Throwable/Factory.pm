@@ -26,7 +26,7 @@ sub class_for {
   } else {
     @roles = qw(
       HTTP::Throwable::Role::Generic
-      HTTP::Throwable::Role::BoringBody
+      HTTP::Throwable::Role::BoringText
     );
   }
 

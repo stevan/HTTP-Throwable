@@ -1,15 +1,12 @@
 package HTTP::Throwable::Role::Status::PreconditionFailed;
-use Moose;
-use MooseX::StrictConstructor;
+use Moose::Role;
 
-extends 'HTTP::Throwable';
+with 'HTTP::Throwable';
 
-has '+status_code' => ( default => 412 );
-has '+reason'      => ( default => 'Precondition Failed' );
+sub default_status_code { 412 }
+sub default_reason      { 'Precondition Failed' }
 
-__PACKAGE__->meta->make_immutable;
-
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 

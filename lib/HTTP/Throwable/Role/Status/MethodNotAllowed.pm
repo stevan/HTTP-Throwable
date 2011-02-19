@@ -6,7 +6,7 @@ use List::AllUtils qw[ uniq ];
 
 with(
   'HTTP::Throwable',
-  'HTTP::Throwable::Role::BoringBody',
+  'HTTP::Throwable::Role::BoringText',
 );
 
 enum 'HTTP::Throwable::Type::Methods' => qw[

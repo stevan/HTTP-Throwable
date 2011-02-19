@@ -1,15 +1,12 @@
 package HTTP::Throwable::Role::Status::LengthRequired;
-use Moose;
-use MooseX::StrictConstructor;
+use Moose::Role;
 
-extends 'HTTP::Throwable';
+with 'HTTP::Throwable';
 
-has '+status_code' => ( default => 411 );
-has '+reason'      => ( default => 'Length Required' );
+sub default_status_code { 411 }
+sub default_reason      { 'Length Required' }
 
-__PACKAGE__->meta->make_immutable;
-
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 

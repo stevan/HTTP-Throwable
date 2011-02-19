@@ -1,15 +1,12 @@
 package HTTP::Throwable::Role::Status::NotAcceptable;
-use Moose;
-use MooseX::StrictConstructor;
+use Moose::Role;
 
-extends 'HTTP::Throwable';
+with 'HTTP::Throwable';
 
-has '+status_code' => ( default => 406 );
-has '+reason'      => ( default => 'Not Acceptable' );
+sub default_status_code { 406 }
+sub default_reason      { 'Not Acceptable' }
 
-__PACKAGE__->meta->make_immutable;
-
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 

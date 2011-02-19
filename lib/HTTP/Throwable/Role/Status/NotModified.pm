@@ -1,13 +1,12 @@
 package HTTP::Throwable::Role::Status::NotModified;
-use Moose;
-use MooseX::StrictConstructor;
+use Moose::Role;
 
 use Plack::Util ();
 
-extends 'HTTP::Throwable';
+with 'HTTP::Throwable';
 
-has '+status_code' => ( default => 304 );
-has '+reason'      => ( default => 'Not Modified' );
+sub default_status_code { 304 }
+sub default_reason      { 'Not Modified' }
 
 has 'location' => (
     is       => 'ro',

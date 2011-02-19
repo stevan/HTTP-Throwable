@@ -1,15 +1,12 @@
 package HTTP::Throwable::Role::Status::BadGateway;
-use Moose;
-use MooseX::StrictConstructor;
+use Moose::Role;
 
-extends 'HTTP::Throwable';
+with 'HTTP::Throwable';
 
-has '+status_code' => ( default => 502 );
-has '+reason'      => ( default => 'Bad Gateway' );
+sub default_status_code { 502 }
+sub default_reason      { 'Bad Gateway' }
 
-__PACKAGE__->meta->make_immutable;
-
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 
