@@ -1,11 +1,13 @@
 package HTTP::Throwable::Role::Status::ServiceUnavailable;
-use Moose;
-use MooseX::StrictConstructor;
+use Moose::Role;
 
-extends 'HTTP::Throwable';
+with(
+  'HTTP::Throwable',
+  'HTTP::Throwable::Role::BoringText',
+);
 
-has '+status_code' => ( default => 503 );
-has '+reason'      => ( default => 'Service Unavailable' );
+sub default_status_code { 503 }
+sub default_reason      { 'Service Unavailable' }
 
 has 'retry_after' => ( is => 'ro', isa => 'Str' );
 
@@ -19,9 +21,7 @@ around 'build_headers' => sub {
     $headers;
 };
 
-__PACKAGE__->meta->make_immutable;
-
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 

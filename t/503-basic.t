@@ -1,42 +1,14 @@
 #!/usr/bin/perl
-
 use strict;
 use warnings;
 
 use Test::More;
-use Test::Fatal;
-use Test::Moose;
+use t::lib::Test::HT;
 
-BEGIN {
-    use_ok('HTTP::Throwable::ServiceUnavailable');
-}
-
-isa_ok(exception {
-    HTTP::Throwable::ServiceUnavailable->throw( retry_after => 'A Little While' );
-}, 'HTTP::Throwable');
-
-does_ok(exception {
-    HTTP::Throwable::ServiceUnavailable->throw( retry_after => 'A Little While' );
-}, 'Throwable');
-
-my $e = HTTP::Throwable::ServiceUnavailable->new( retry_after => 'A Little While' );
-
-my $body = '503 Service Unavailable';
-
-is($e->as_string, $body, '... got the right string transformation');
-is_deeply(
-    $e->as_psgi,
-    [
-        503,
-        [
-            'Content-Type'   => 'text/plain',
-            'Content-Length' => length $body,
-            'Retry-After'    => 'A Little While'
-        ],
-        [ $body ]
-    ],
-    '... got the right PSGI transformation'
-);
-
+ht_test(ServiceUnavailable => { retry_after => 'A Little While' }, {
+  code    => 503,
+  reason  => 'Service Unavailable',
+  headers => [ 'Retry-After' => 'A Little While' ],
+});
 
 done_testing;

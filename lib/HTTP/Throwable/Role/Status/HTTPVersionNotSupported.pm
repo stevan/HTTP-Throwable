@@ -1,15 +1,15 @@
 package HTTP::Throwable::Role::Status::HTTPVersionNotSupported;
-use Moose;
-use MooseX::StrictConstructor;
+use Moose::Role;
 
-extends 'HTTP::Throwable';
+with(
+  'HTTP::Throwable',
+  'HTTP::Throwable::Role::BoringText',
+);
 
-has '+status_code' => ( default => 505 );
-has '+reason'      => ( default => 'HTTP Version Not Supported' );
+sub default_status_code { 505 }
+sub default_reason      { 'HTTP Version Not Supported' }
 
-__PACKAGE__->meta->make_immutable;
-
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 
