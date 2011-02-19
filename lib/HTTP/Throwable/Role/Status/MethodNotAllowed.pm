@@ -1,11 +1,13 @@
 package HTTP::Throwable::Role::Status::MethodNotAllowed;
-use Moose;
-use MooseX::StrictConstructor;
+use Moose::Role;
 use Moose::Util::TypeConstraints;
 
 use List::AllUtils qw[ uniq ];
 
-extends 'HTTP::Throwable';
+with(
+  'HTTP::Throwable',
+  'HTTP::Throwable::Role::BoringBody',
+);
 
 enum 'HTTP::Throwable::Type::Methods' => qw[
     OPTIONS GET HEAD
@@ -17,8 +19,8 @@ subtype 'HTTP::Throwable::Type::MethodList'
     => as 'ArrayRef'
     => where { (scalar uniq @{$_}) == (scalar @{$_}) };
 
-has '+status_code' => ( default => 405 );
-has '+reason'      => ( default => 'Method Not Allowed' );
+sub default_status_code { 405 }
+sub default_reason      { 'Method Not Allowed' }
 
 has 'allow' => (
     is       => 'ro',
@@ -34,9 +36,7 @@ around 'build_headers' => sub {
     $headers;
 };
 
-__PACKAGE__->meta->make_immutable;
-
-no Moose; no Moose::Util::TypeConstraints; 1;
+no Moose::Role; no Moose::Util::TypeConstraints; 1;
 
 __END__
 

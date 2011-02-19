@@ -9,6 +9,14 @@ sub throw {
   $factory->class_for($ident)->throw($arg);
 }
 
+sub new_exception {
+  my $factory = shift;
+  my $ident   = (! ref $_[0]) ? shift(@_) : undef;
+  my $arg     = shift || {};
+
+  $factory->class_for($ident)->new($arg);
+}
+
 sub class_for {
   my ($self, $ident) = @_;
 

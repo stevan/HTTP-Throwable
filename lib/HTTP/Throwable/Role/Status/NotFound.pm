@@ -1,15 +1,16 @@
 package HTTP::Throwable::Role::Status::NotFound;
-use Moose;
+use Moose::Role;
 use MooseX::StrictConstructor;
 
-extends 'HTTP::Throwable';
+with(
+  'HTTP::Throwable',
+  'HTTP::Throwable::Role::BoringBody',
+);
 
-has '+status_code' => ( default => 404 );
-has '+reason'      => ( default => 'Not Found' );
+sub default_status_code { 404 }
+sub default_reason      { 'Not Found' }
 
-__PACKAGE__->meta->make_immutable;
-
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 
