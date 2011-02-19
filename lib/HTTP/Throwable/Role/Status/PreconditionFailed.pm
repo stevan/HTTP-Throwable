@@ -1,7 +1,10 @@
 package HTTP::Throwable::Role::Status::PreconditionFailed;
 use Moose::Role;
 
-with 'HTTP::Throwable';
+with(
+  'HTTP::Throwable',
+  'HTTP::Throwable::Role::BoringText',
+);
 
 sub default_status_code { 412 }
 sub default_reason      { 'Precondition Failed' }

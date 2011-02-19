@@ -1,15 +1,15 @@
 package HTTP::Throwable::Role::Status::Conflict;
-use Moose;
-use MooseX::StrictConstructor;
+use Moose::Role;
 
-extends 'HTTP::Throwable';
+with(
+  'HTTP::Throwable',
+  'HTTP::Throwable::Role::BoringText',
+);
 
-has '+status_code' => ( default => 409 );
-has '+reason'      => ( default => 'Conflict' );
+sub default_status_code { 409 }
+sub default_reason      { 'Conflict' }
 
-__PACKAGE__->meta->make_immutable;
-
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 

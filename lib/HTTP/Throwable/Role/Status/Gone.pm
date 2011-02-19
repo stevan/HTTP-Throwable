@@ -1,15 +1,16 @@
 package HTTP::Throwable::Role::Status::Gone;
-use Moose;
+use Moose::Role;
 use MooseX::StrictConstructor;
 
-extends 'HTTP::Throwable';
+with(
+  'HTTP::Throwable',
+  'HTTP::Throwable::Role::BoringText',
+);
 
-has '+status_code' => ( default => 410 );
-has '+reason'      => ( default => 'Gone' );
+sub default_status_code { 410 }
+sub default_reason      { 'Gone' }
 
-__PACKAGE__->meta->make_immutable;
-
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 
