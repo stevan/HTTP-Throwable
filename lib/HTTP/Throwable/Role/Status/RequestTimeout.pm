@@ -1,15 +1,15 @@
 package HTTP::Throwable::Role::Status::RequestTimeout;
-use Moose;
-use MooseX::StrictConstructor;
+use Moose::Role;
 
-extends 'HTTP::Throwable';
+with(
+  'HTTP::Throwable',
+  'HTTP::Throwable::Role::BoringText',
+);
 
-has '+status_code' => ( default => 408 );
-has '+reason'      => ( default => 'Request Timeout' );
+sub default_status_code { 408 }
+sub default_reason      { 'Request Timeout' }
 
-__PACKAGE__->meta->make_immutable;
-
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 

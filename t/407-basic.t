@@ -4,65 +4,34 @@ use strict;
 use warnings;
 
 use Test::More;
-use Test::Fatal;
-use Test::Moose;
+use t::lib::Test::HT;
 
-BEGIN {
-    use_ok('HTTP::Throwable::ProxyAuthenticationRequired');
-}
+ht_test(
+  ProxyAuthenticationRequired => {
+    proxy_authenticate => 'Basic realm="realm"'
+  },
+  {
+    code    => 407,
+    reason  => 'Proxy Authentication Required',
+    headers => [ 'Proxy-Authenticate' => 'Basic realm="realm"' ],
+  },
+);
 
-isa_ok(exception {
-    HTTP::Throwable::ProxyAuthenticationRequired->throw( proxy_authenticate => 'Basic realm="realm"' );
-}, 'HTTP::Throwable');
-
-does_ok(exception {
-    HTTP::Throwable::ProxyAuthenticationRequired->throw( proxy_authenticate => 'Basic realm="realm"' );
-}, 'Throwable');
-
-{
-    my $e = HTTP::Throwable::ProxyAuthenticationRequired->new( proxy_authenticate => 'Basic realm="realm"' );
-    my $body = '407 Proxy Authentication Required';
-
-    is($e->as_string, $body, '... got the right string transformation');
-    is_deeply(
-        $e->as_psgi,
-        [
-            407,
-            [
-                'Content-Type'        => 'text/plain',
-                'Content-Length'      => length $body,
-                 'Proxy-Authenticate' => 'Basic realm="realm"'
-            ],
-            [ $body ]
-        ],
-        '... got the right PSGI transformation'
-    );
-}
-
-{
-    my $e = HTTP::Throwable::ProxyAuthenticationRequired->new(
-        proxy_authenticate => [
-            'Basic realm="realm"',
-            'Digest realm="other_realm"'
-        ]
-    );
-    my $body = '407 Proxy Authentication Required';
-
-    is($e->as_string, $body, '... got the right string transformation');
-    is_deeply(
-        $e->as_psgi,
-        [
-            407,
-            [
-                'Content-Type'        => 'text/plain',
-                'Content-Length'      => length $body,
-                 'Proxy-Authenticate' => 'Basic realm="realm"',
-                 'Proxy-Authenticate' => 'Digest realm="other_realm"',
-            ],
-            [ $body ]
-        ],
-        '... got the right PSGI transformation'
-    );
-}
+ht_test(
+  ProxyAuthenticationRequired => {
+    proxy_authenticate => [
+      'Basic realm="realm"',
+      'Digest realm="other_realm"',
+    ],
+  },
+  {
+    code    => 407,
+    reason  => 'Proxy Authentication Required',
+    headers => [
+      'Proxy-Authenticate' => 'Basic realm="realm"',
+      'Proxy-Authenticate' => 'Digest realm="other_realm"',
+    ],
+  },
+);
 
 done_testing;

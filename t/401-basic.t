@@ -4,67 +4,32 @@ use strict;
 use warnings;
 
 use Test::More;
-use Test::Fatal;
-use Test::Moose;
+use t::lib::Test::HT;
 
-BEGIN {
-    use_ok('HTTP::Throwable::Unauthorized');
-}
+ht_test(
+  Unauthorized => { www_authenticate => 'Basic realm="realm"' },
+  {
+    code    => 401,
+    reason  => 'Unauthorized',
+    headers => [ 'WWW-Authenticate' => 'Basic realm="realm"' ],
+  },
+);
 
-isa_ok(exception {
-    HTTP::Throwable::Unauthorized->throw( www_authenticate => 'Basic realm="realm"');
-}, 'HTTP::Throwable');
-
-does_ok(exception {
-    HTTP::Throwable::Unauthorized->throw( www_authenticate => 'Basic realm="realm"');
-}, 'Throwable');
-
-{
-    my $e = HTTP::Throwable::Unauthorized->new( www_authenticate => 'Basic realm="realm"');
-
-    my $body = '401 Unauthorized';
-
-    is($e->as_string, $body, '... got the right string transformation');
-    is_deeply(
-        $e->as_psgi,
-        [
-            401,
-            [
-                'Content-Type'     => 'text/plain',
-                'Content-Length'   => length $body,
-                'WWW-Authenticate' => 'Basic realm="realm"'
-            ],
-            [ $body ]
-        ],
-        '... got the right PSGI transformation'
-    );
-}
-
-{
-    my $e = HTTP::Throwable::Unauthorized->new(
-        www_authenticate => [
-            'Basic realm="secret but not secure"',
-            'Digest realm="a little more secure"'
-        ]
-    );
-
-    my $body = '401 Unauthorized';
-
-    is($e->as_string, $body, '... got the right string transformation');
-    is_deeply(
-        $e->as_psgi,
-        [
-            401,
-            [
-                'Content-Type'     => 'text/plain',
-                'Content-Length'   => length $body,
-                'WWW-Authenticate' => 'Basic realm="secret but not secure"',
-                'WWW-Authenticate' => 'Digest realm="a little more secure"'
-            ],
-            [ $body ]
-        ],
-        '... got the right PSGI transformation'
-    );
-}
+ht_test(
+  Unauthorized => {
+    www_authenticate => [
+      'Basic realm="basic realm"',
+      'Digest realm="digest realm"',
+    ]
+  },
+  {
+    code    => 401,
+    reason  => 'Unauthorized',
+    headers => [
+      'WWW-Authenticate' => 'Basic realm="basic realm"',
+      'WWW-Authenticate' => 'Digest realm="digest realm"',
+    ],
+  },
+);
 
 done_testing;
