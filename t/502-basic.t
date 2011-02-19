@@ -4,38 +4,11 @@ use strict;
 use warnings;
 
 use Test::More;
-use Test::Fatal;
-use Test::Moose;
+use t::lib::Test::HT;
 
-BEGIN {
-    use_ok('HTTP::Throwable::BadGateway');
-}
-
-isa_ok(exception {
-    HTTP::Throwable::BadGateway->throw();
-}, 'HTTP::Throwable');
-
-does_ok(exception {
-    HTTP::Throwable::BadGateway->throw();
-}, 'Throwable');
-
-my $e = HTTP::Throwable::BadGateway->new();
-
-my $body = '502 Bad Gateway';
-
-is($e->as_string, $body, '... got the right string transformation');
-is_deeply(
-    $e->as_psgi,
-    [
-        502,
-        [
-            'Content-Type'   => 'text/plain',
-            'Content-Length' => length $body,
-        ],
-        [ $body ]
-    ],
-    '... got the right PSGI transformation'
-);
-
+ht_test(BadGateway => {}, {
+  code   => 502,
+  reason => 'Bad Gateway',
+});
 
 done_testing;
