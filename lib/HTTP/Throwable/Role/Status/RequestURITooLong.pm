@@ -1,15 +1,15 @@
 package HTTP::Throwable::Role::Status::RequestURITooLong;
-use Moose;
-use MooseX::StrictConstructor;
+use Moose::Role;
 
-extends 'HTTP::Throwable';
+with(
+  'HTTP::Throwable',
+  'HTTP::Throwable::Role::BoringText',
+);
 
-has '+status_code' => ( default => 414 );
-has '+reason'      => ( default => 'Request-URI Too Long' );
+sub default_status_code { 414 }
+sub default_reason      { 'Request-URI Too Long' }
 
-__PACKAGE__->meta->make_immutable;
-
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 

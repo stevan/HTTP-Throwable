@@ -1,11 +1,13 @@
-package HTTP::Throwable::Role::Status::RequestEntityToLarge;
-use Moose;
-use MooseX::StrictConstructor;
+package HTTP::Throwable::Role::Status::RequestEntityTooLarge;
+use Moose::Role;
 
-extends 'HTTP::Throwable';
+with(
+  'HTTP::Throwable',
+  'HTTP::Throwable::Role::BoringText',
+);
 
-has '+status_code' => ( default => 413 );
-has '+reason'      => ( default => 'Request Entity To Large' );
+sub default_status_code { 413 }
+sub default_reason      { 'Request Entity Too Large' }
 
 has 'retry_after' => ( is => 'ro', isa => 'Str' );
 
@@ -19,13 +21,11 @@ around 'build_headers' => sub {
     $headers;
 };
 
-__PACKAGE__->meta->make_immutable;
-
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 
-# ABSTRACT: 413 Request Entity To Large
+# ABSTRACT: 413 Request Entity Too Large
 
 =head1 DESCRIPTION
 

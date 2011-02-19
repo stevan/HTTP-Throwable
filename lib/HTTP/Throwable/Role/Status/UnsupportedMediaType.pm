@@ -1,15 +1,15 @@
 package HTTP::Throwable::Role::Status::UnsupportedMediaType;
-use Moose;
-use MooseX::StrictConstructor;
+use Moose::Role;
 
-extends 'HTTP::Throwable';
+with(
+  'HTTP::Throwable',
+  'HTTP::Throwable::Role::BoringText',
+);
 
-has '+status_code' => ( default => 415 );
-has '+reason'      => ( default => 'Unsupported Media Type' );
+sub default_status_code { 415 }
+sub default_reason      { 'Unsupported Media Type' }
 
-__PACKAGE__->meta->make_immutable;
-
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 
