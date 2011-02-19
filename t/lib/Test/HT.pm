@@ -15,8 +15,9 @@ use Sub::Exporter -setup => {
 };
 
 sub ht_test {
-  my $identifier = shift;
-  my $arg        = shift || {};
+  my ($identifier, $arg);
+
+  ($identifier, $arg) = ref $_[0] ? (undef, shift) : (shift, shift || {});
 
   my $comment    = (defined $_[0] and ! ref $_[0])
                  ? shift(@_)
@@ -38,8 +39,20 @@ sub ht_test {
     does_ok($exception, 'HTTP::Throwable');
     does_ok($exception, 'Throwable');
 
-    if (defined $extra->{code}) {
-      is($exception->status_code, $extra->{code}, "got expected status code");
+    if (my $code = $extra->{code}) {
+      is($exception->status_code, $code, "got expected status code");
+
+      $code =~ /^3/
+        ? ok(   $exception->is_redirect, "it's a redirect" )
+        : ok( ! $exception->is_redirect, "it's not a redirect" );
+
+      $code =~ /^4/
+        ? ok(   $exception->is_client_error, "it's a client error")
+        : ok( ! $exception->is_client_error, "it's a not client error");
+
+      $code =~ /^5/
+        ? ok(   $exception->is_server_error, "it's a server error" )
+        : ok( ! $exception->is_server_error, "it's not a server error" );
     }
 
     if (defined $extra->{reason}) {

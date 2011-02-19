@@ -1,6 +1,7 @@
 package HTTP::Throwable;
 use Moose::Role;
 use MooseX::StrictConstructor;
+use MooseX::Role::WithOverloading;
 
 use overload
     '&{}' => 'to_app',

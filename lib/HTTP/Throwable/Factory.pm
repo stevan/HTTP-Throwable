@@ -12,18 +12,21 @@ sub throw {
 sub class_for {
   my ($self, $ident) = @_;
 
-  my $role;
+  my @roles;
   if (defined $ident) {
-    $role = 'HTTP::Throwable::Role::Status::' . $ident;
+    @roles = 'HTTP::Throwable::Role::Status::' . $ident;
   } else {
-    $role = 'HTTP::Throwable::Role::Generic';
+    @roles = qw(
+      HTTP::Throwable::Role::Generic
+      HTTP::Throwable::Role::BoringBody
+    );
   }
 
-  Class::MOP::load_class($role);
+  Class::MOP::load_class($_) for @roles;
 
   my $class = Moose::Meta::Class->create_anon_class(
     superclasses => [ qw(Moose::Object) ],
-    roles        => [ qw(HTTP::Throwable), $role ],
+    roles        => [ qw(HTTP::Throwable), @roles ],
     cache        => 1,
   );
 
