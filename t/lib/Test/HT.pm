@@ -47,12 +47,11 @@ sub ht_test {
     }
 
     if (defined $extra->{code} and defined $extra->{reason}) {
-      my $first_line = join q{ }, @$extra{ qw(code reason) };
-      like(
-        $exception->as_string,
-        qr/\A\Q$first_line\E$/m,
-        "got expected first line",
-      );
+      my $body = $extra->{body} || join q{ }, @$extra{ qw(code reason) };
+
+      cmp_deeply($exception->as_string, $body, "got the expected body");
+
+      my $length = $extra->{length} // length $body;
 
       unless (defined $extra->{body}) {
         cmp_deeply(
@@ -61,10 +60,10 @@ sub ht_test {
                 $extra->{code},
                 bag(
                     'Content-Type'   => 'text/plain',
-                    'Content-Length' => length $first_line,
+                    'Content-Length' => $length,
                     @{ $extra->{headers} || [] },
                 ),
-                [ $first_line ]
+                [ $body ]
             ],
             '... got the right PSGI transformation'
         );

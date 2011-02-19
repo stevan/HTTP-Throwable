@@ -1,7 +1,10 @@
 package HTTP::Throwable::Role::Status::MultipleChoices;
 use Moose::Role;
 
-with 'HTTP::Throwable';
+with(
+    'HTTP::Throwable',
+    'HTTP::Throwable::Role::BoringBody',
+);
 
 sub default_status_code { 300 }
 sub default_reason      { 'Multiple Choices' }

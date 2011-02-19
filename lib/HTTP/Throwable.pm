@@ -36,12 +36,15 @@ sub build_headers {
     ]
 }
 
-sub as_string {
+sub status_line {
     my $self = shift;
     my $out  = $self->status_code . " " . $self->reason;
     $out .= " " . $self->message if $self->message;
-    $out;
+
+    return $out;
 }
+
+sub as_string { $_[0]->default_text }
 
 sub as_psgi {
     my $self    = shift;

@@ -1,25 +1,25 @@
 package HTTP::Throwable::Role::Status::InternalServerError;
-use Moose;
-use MooseX::StrictConstructor;
+use Moose::Role;
 
-extends 'HTTP::Throwable';
-   with 'StackTrace::Auto';
+with(
+  'HTTP::Throwable',
+  'StackTrace::Auto',
+);
 
-has '+status_code' => ( default => 500 );
-has '+reason'      => ( default => 'Internal Server Error' );
+sub default_status_code { 500 }
+sub default_reason      { 'Internal Server Error' }
 
 has 'show_stack_trace' => ( is => 'ro', isa => 'Bool', default => 1 );
 
-around 'as_string' => sub {
-    my $next = shift;
-    my $self = shift;
-    my $out  = $self->$next();
+sub default_text {
+    my ($self) = @_;
+
+    my $out = $self->status_line;
     $out .= "\n\n" . $self->stack_trace->as_string
         if $self->show_stack_trace;
-    $out;
-};
 
-__PACKAGE__->meta->make_immutable( inline_constructor => 0 );
+    return $out;
+}
 
 no Moose; 1;
 

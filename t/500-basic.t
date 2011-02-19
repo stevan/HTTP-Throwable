@@ -1,41 +1,19 @@
 #!/usr/bin/perl
-
 use strict;
 use warnings;
 
+use Test::Deep qw(ignore re);
 use Test::More;
 use Test::Fatal;
 use Test::Moose;
 
-BEGIN {
-    use_ok('HTTP::Throwable::InternalServerError');
-}
+use t::lib::Test::HT;
 
-isa_ok(exception {
-    HTTP::Throwable::InternalServerError->throw();
-}, 'HTTP::Throwable');
-
-does_ok(exception {
-    HTTP::Throwable::InternalServerError->throw();
-}, 'Throwable');
-
-my $e = HTTP::Throwable::InternalServerError->new();
-
-my $body = '500 Internal Server Error' . "\n\n";
-
-is($e->as_string, $body, '... got the right string transformation');
-is_deeply(
-    $e->as_psgi,
-    [
-        500,
-        [
-            'Content-Type'   => 'text/plain',
-            'Content-Length' => length $body,
-        ],
-        [ $body ]
-    ],
-    '... got the right PSGI transformation'
-);
-
+ht_test(InternalServerError => {}, {
+  code   => 500,
+  reason => 'Internal Server Error',
+  length => ignore(),
+  body   => re(qr{500 Internal Server Error.+at t/lib/Test/HT.pm}s),
+});
 
 done_testing;
