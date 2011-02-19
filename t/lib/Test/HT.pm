@@ -4,6 +4,7 @@ use warnings;
 
 use HTTP::Throwable::Factory;
 use Scalar::Util qw(reftype);
+use Test::Deep qw(cmp_deeply bag);
 use Test::Fatal;
 use Test::Moose;
 use Test::More;
@@ -54,14 +55,15 @@ sub ht_test {
       );
 
       unless (defined $extra->{body}) {
-        is_deeply(
+        cmp_deeply(
             $exception->as_psgi,
             [
                 $extra->{code},
-                [
+                bag(
                     'Content-Type'   => 'text/plain',
                     'Content-Length' => length $first_line,
-                ],
+                    @{ $extra->{headers} || [] },
+                ),
                 [ $first_line ]
             ],
             '... got the right PSGI transformation'

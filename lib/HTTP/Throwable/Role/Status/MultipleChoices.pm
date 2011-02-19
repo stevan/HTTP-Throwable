@@ -1,11 +1,10 @@
 package HTTP::Throwable::Role::Status::MultipleChoices;
-use Moose;
-use MooseX::StrictConstructor;
+use Moose::Role;
 
-extends 'HTTP::Throwable';
+with 'HTTP::Throwable';
 
-has '+status_code' => ( default => 300 );
-has '+reason'      => ( default => 'Multiple Choices' );
+sub default_status_code { 300 }
+sub default_reason      { 'Multiple Choices' }
 
 has 'location' => ( is => 'ro', isa => 'Str' );
 
@@ -18,8 +17,6 @@ around 'build_headers' => sub {
     }
     $headers;
 };
-
-__PACKAGE__->meta->make_immutable;
 
 no Moose; 1;
 
