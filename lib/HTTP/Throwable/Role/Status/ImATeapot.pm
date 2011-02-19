@@ -1,11 +1,15 @@
 package HTTP::Throwable::Role::Status::ImATeapot;
-use Moose;
-use MooseX::StrictConstructor;
+use Moose::Role;
 
-extends 'HTTP::Throwable';
+with(
+  'HTTP::Throwable',
+);
 
-has '+status_code' => ( default => 418 );
-has '+reason'      => ( default => "I'm a teapot" );
+has 'short' => (is => 'ro', isa => 'Bool', default => 0);
+has 'stout' => (is => 'ro', isa => 'Bool', default => 0);
+
+sub default_status_code { 418 }
+sub default_reason      { q{I'm a teapot} }
 
 my $TEAPOT = <<'END';
                        (
@@ -21,10 +25,7 @@ my $TEAPOT = <<'END';
       `-.________,-'
 END
 
-has '+message'     => (
-  lazy      => 1,
-  init_arg  => undef,
-  default   => sub {
+sub default_text {
     my $self = shift;
     my $base = $TEAPOT;
     my $msg  = $self->short && $self->stout ? " SHORT AND STOUT"
@@ -35,15 +36,9 @@ has '+message'     => (
     $base =~ s/__X__/$msg/;
 
     return $base;
-  },
-);
+}
 
-has 'short' => (is => 'ro', isa => 'Bool', default => 0);
-has 'stout' => (is => 'ro', isa => 'Bool', default => 0);
-
-__PACKAGE__->meta->make_immutable;
-
-no Moose; 1;
+no Moose::Role; 1;
 
 __END__
 
