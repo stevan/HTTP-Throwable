@@ -11,7 +11,7 @@ sub default_reason      { 'Internal Server Error' }
 
 has 'show_stack_trace' => ( is => 'ro', isa => 'Bool', default => 1 );
 
-sub default_text {
+sub text_body {
     my ($self) = @_;
 
     my $out = $self->status_line;

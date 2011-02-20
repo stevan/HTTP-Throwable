@@ -27,8 +27,6 @@ has 'reason' => (
 
 has 'message' => ( is => 'ro', isa => 'Str' );
 
-sub content_type { 'text/plain' }
-
 sub build_headers {
     my ($self, $body) = @_;
     [
@@ -45,11 +43,14 @@ sub status_line {
     return $out;
 }
 
-sub as_string { $_[0]->default_text }
+requires 'content_type';
+requires 'body';
+
+sub as_string { $_[0]->body }
 
 sub as_psgi {
     my $self    = shift;
-    my $body    = $self->as_string;
+    my $body    = $self->body;
     my $headers = $self->build_headers( $body );
     [ $self->status_code, $headers, [ $body ] ];
 }

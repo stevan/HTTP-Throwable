@@ -17,6 +17,10 @@ sub new_exception {
   $factory->class_for($ident)->new($arg);
 }
 
+sub default_roles {
+  return qw(HTTP::Throwable HTTP::Throwable::Role::TextBody);
+}
+
 sub class_for {
   my ($self, $ident) = @_;
 
@@ -34,7 +38,7 @@ sub class_for {
 
   my $class = Moose::Meta::Class->create_anon_class(
     superclasses => [ qw(Moose::Object) ],
-    roles        => [ qw(HTTP::Throwable), @roles ],
+    roles        => [ $self->default_roles, @roles ],
     cache        => 1,
   );
 

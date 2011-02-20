@@ -25,7 +25,7 @@ my $TEAPOT = <<'END';
       `-.________,-'
 END
 
-sub default_text {
+sub text_body {
     my $self = shift;
     my $base = $TEAPOT;
     my $msg  = $self->short && $self->stout ? " SHORT AND STOUT"
