@@ -4,17 +4,12 @@ use MooseX::StrictConstructor;
 
 with(
   'HTTP::Throwable',
+  'HTTP::Throwable::Role::Redirect',
   'HTTP::Throwable::Role::BoringText',
 );
 
 sub default_status_code { 302 }
 sub default_reason      { 'Found' }
-
-has 'location' => (
-    is       => 'ro',
-    isa      => 'Str',
-    required => 1,
-);
 
 has 'additional_headers' => ( is => 'ro', isa => 'ArrayRef' );
 
@@ -22,7 +17,6 @@ around 'build_headers' => sub {
     my $next    = shift;
     my $self    = shift;
     my $headers = $self->$next( @_ );
-    push @$headers => ('Location' => $self->location);
     if ( my $additional_headers = $self->additional_headers ) {
         push @$headers => @$additional_headers;
     }

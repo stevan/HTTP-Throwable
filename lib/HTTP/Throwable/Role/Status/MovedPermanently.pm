@@ -3,25 +3,12 @@ use Moose::Role;
 
 with(
   'HTTP::Throwable',
+  'HTTP::Throwable::Role::Redirect',
   'HTTP::Throwable::Role::BoringText',
 );
 
 sub default_status_code { 301 }
 sub default_reason      { 'Moved Permanently' }
-
-has 'location' => (
-    is       => 'ro',
-    isa      => 'Str',
-    required => 1,
-);
-
-around 'build_headers' => sub {
-    my $next    = shift;
-    my $self    = shift;
-    my $headers = $self->$next( @_ );
-    push @$headers => ('Location' => $self->location);
-    $headers;
-};
 
 no Moose::Role; 1;
 
