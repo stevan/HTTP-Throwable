@@ -17,11 +17,16 @@ sub new_exception {
     $factory->class_for($ident)->new($arg);
 }
 
-sub default_roles {
+sub core_roles {
     return qw(
         HTTP::Throwable
-        HTTP::Throwable::Role::TextBody
         MooseX::StrictConstructor::Role::Object
+    );
+}
+
+sub extra_roles {
+    return qw(
+        HTTP::Throwable::Role::TextBody
     );
 }
 
@@ -33,8 +38,8 @@ sub class_for {
         @roles = 'HTTP::Throwable::Role::Status::' . $ident;
     } else {
         @roles = qw(
-          HTTP::Throwable::Role::Generic
-          HTTP::Throwable::Role::BoringText
+            HTTP::Throwable::Role::Generic
+            HTTP::Throwable::Role::BoringText
         );
     }
 
@@ -42,7 +47,11 @@ sub class_for {
 
     my $class = Moose::Meta::Class->create_anon_class(
         superclasses => [ qw(Moose::Object) ],
-        roles        => [ $self->default_roles, @roles ],
+        roles        => [
+          $self->core_roles,
+          $self->extra_roles,
+          @roles
+        ],
         cache        => 1,
     );
 
