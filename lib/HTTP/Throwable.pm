@@ -94,60 +94,72 @@ __END__
 
 =head1 SYNOPSIS
 
-  use HTTP::Throwable;
+I<Actually>, you probably want to use L<HTTP::Throwable::Factory>, so here's a
+sample of how that works:
 
-  # you can use this directly, but ...
-  HTTP::Throwable->throw(
+  use HTTP::Throwable::Factory qw(http_throw http_exception);
+
+  # you can just throw a generic exception...
+  HTTP::Throwable::Factory->throw({
       status_code => 500,
       reason      => 'Internal Server Error',
       message     => 'Something has gone very wrong!'
-  );
+  });
 
-  # ... it is more useful for subclassing
-  package InternalServerError;
-  use Moose;
+  # or with a little sugar...
+  http_throw({
+      status_code => 500,
+      reason      => 'Internal Server Error',
+      message     => 'Something has gone very wrong!'
+  });
 
-  extends 'HTTP::Throwable';
-     with 'StackTrace::Auto'; # it is 500 so include the stack trace
 
-  has '+status_code' => ( default => 500 );
-  has '+reason'      => ( default => 'Internal Server Error' );
+  # ...but it's much more convenient to throw well-defined exceptions, like
+  # this:
 
-  around 'as_string' => sub {
-      my $next = shift;
-      my $self = shift;
-      $self->$next() . "\n\n" . $self->stack_trace->as_string;
-  };
+  http_throw(InternalServerError => {
+    message => 'Something has gone very wrong!',
+  });
 
-  # and better yet, just use the provided subclasses
-  # see the SUBCLASSES section below for a list
-  HTTP::Throwable::InternalServerError->throw(
-      message => 'Something has gone very wrong!'
-  );
-
-  # and lastly, the exception objects themselves
-  # also are PSGI apps
+  # or you can use the exception objects as PSGI apps:
   builder {
-      mount '/old' => HTTP::Throwable::MovedPermanently->new(
-          location => '/new'
-      );
+      mount '/old' => http_exception(MovedPermanently => { location => '/new' }),
       # ...
   };
 
 =head1 DESCRIPTION
 
-This module a set of strongy-typed, PSGI-friendly exception classes
-corresponding to the HTTP error status code (4xx-5xx) as well as
-the redirection codes (3xx).
+HTTP-Throwable provides a set of strongly-typed, PSGI-friendly exception
+implementations corresponding to the HTTP error status code (4xx-5xx) as well
+as the redirection codes (3xx).
 
-This particular package is the base object for all the HTTP::Throwable
-subclasses. While you can easily use this object in your code, you
-likely want to use the appropriate subclass for the given error as
-they will provide the status-code, reason and enforce any required
-headers, see the L<SUBCLASSES> seciton below for more details.
+This particular package (HTTP::Throwable) is the shared role for all the
+exceptions involved.  It's not intended that you use HTTP::Throwable
+directly, although you can, and instructions for using it correctly are
+given below.  Instead, you probably want to use
+L<HTTP::Throwable::Factory>, which will assemble exception classes from
+roles needed to build an exception for your use case.
 
-NOTE: We have also included some of the documentation from the
-HTTP 1.1 spec where appropriate.
+For example, you can throw a redirect:
+
+  use HTTP::Throwable::Factory qw(http_throw);
+
+  http_throw(MovedPermanently => { location => '/foo-bar' });
+
+...or a generic fully user-specified exception...
+
+  http_throw({
+    status_code => 512,
+    reason      => 'Server on fire',
+    message     => "Please try again after heavy rain",
+  });
+
+For a list of pre-defined, known errors, see L</WELL-KNOWN TYPES> below.
+These types will have the correct status code and reason, and will
+understand extra status-related arguments like redirect location or authentication realms.
+
+For information on using HTTP::Throwable directly, see L</COMPOSING WITH
+HTTP::THROWABLE>, below.
 
 =head2 HTTP::Exception
 
@@ -165,11 +177,11 @@ better suits your needs, then by all means, use it.
 =head2 Note about Stack Traces
 
 It should be noted that even though these are all exception objects,
-only the 500 Internal Server Error subclass actually includes the
-stack trace. This is because more often then not you will not
-actually care about the stack trace and therefore do not the extra
-overhead. If you do find you want a stack trace though, it is as
-simple as subclassing and applying the L<StackTrace::Auto> role.
+only the 500 Internal Server Error error actually includes the stack
+trace (albiet optionally). This is because more often then not you will
+not actually care about the stack trace and therefore do not the extra
+overhead. If you do find you want a stack trace though, it is as simple
+as adding the L<StackTrace::Auto> role to your exceptions.
 
 =attr status_code
 
@@ -181,22 +193,26 @@ This is the reason phrase as specified in the HTTP spec.
 
 =attr message
 
-This is an additional message string that can be supplied
+This is an additional message string that can be supplied, which I<may>
+be used when stringifying or building an HTTP response.
+
+=method status_line
+
+This returns a string that would be used as a status line in a response,
+like C<404 Not Found>.
 
 =method as_string
 
-This returns a string representation of the exception made up
-of the status code, the reason and the message.
+This returns a string representation of the exception.  This method
+B<must> be implemented by any class consuming this role.
 
 =method as_psgi
 
 This returns a representation of the exception object as PSGI
-response. It will build the content-type and content-length
-headers and include the result of C<as_string> in the body.
+response.
 
-This will also optionally take an C<$env> parameter, though
-nothing actually uses this, it is mostly there to support
-future possiblities.
+In theory, it accepts a PSGI environment as its only argument, but
+currently the environment is ignored.
 
 =method to_app
 
@@ -209,13 +225,18 @@ and returns the results of C<as_psgi>.
 We overload C<&{}> to call C<to_app>, again in keeping with the
 L<Plack::Component> convention.
 
-=head1 SUBCLASSES
+=head1 WELL-KNOWN TYPES
 
-Below is a list of the subclasses you will find available in
-this distribution. The obvious 4xx and 5xx errors are included
-but we also include the 3xx redirection status codes. This is
-because, while not really an error, the 3xx status codes do
-represent an exceptional control flow.
+Below is a list of the well-known types recognized by the factory and
+shipped with this distribution. The obvious 4xx and 5xx errors are
+included but we also include the 3xx redirection status codes. This is
+because, while not really an error, the 3xx status codes do represent an
+exceptional control flow.
+
+The implementation for each of these is in a role with a name in the
+form C<HTTP::Throwable::Role::Status::STATUS-NAME>.  For example, "Gone"
+is C<HTTP::Throwable::Role::Status::Gone>.  When throwing the exception
+with the factory, just pass "Gone"
 
 =head2 Redirection 3xx
 
@@ -227,19 +248,19 @@ second request is GET or HEAD.
 
 =over 4
 
-=item 300 L<HTTP::Throwable::MultipleChoices>
+=item 300 L<HTTP::Throwable::Role::Status::MultipleChoices>
 
-=item 301 L<HTTP::Throwable::MovedPermanently>
+=item 301 L<HTTP::Throwable::Role::Status::MovedPermanently>
 
-=item 302 L<HTTP::Throwable::Found>
+=item 302 L<HTTP::Throwable::Role::Status::Found>
 
-=item 303 L<HTTP::Throwable::SeeOther>
+=item 303 L<HTTP::Throwable::Role::Status::SeeOther>
 
-=item 304 L<HTTP::Throwable::NotModified>
+=item 304 L<HTTP::Throwable::Role::Status::NotModified>
 
-=item 305 L<HTTP::Throwable::UseProxy>
+=item 305 L<HTTP::Throwable::Role::Status::UseProxy>
 
-=item 307 L<HTTP::Throwable::TemporaryRedirect>
+=item 307 L<HTTP::Throwable::Role::Status::TemporaryRedirect>
 
 =back
 
@@ -255,39 +276,39 @@ to the user.
 
 =over 4
 
-=item 400 L<HTTP::Throwable::BadRequest>
+=item 400 L<HTTP::Throwable::Role::Status::BadRequest>
 
-=item 401 L<HTTP::Throwable::Unauthorized>
+=item 401 L<HTTP::Throwable::Role::Status::Unauthorized>
 
-=item 403 L<HTTP::Throwable::Forbidden>
+=item 403 L<HTTP::Throwable::Role::Status::Forbidden>
 
-=item 404 L<HTTP::Throwable::NotFound>
+=item 404 L<HTTP::Throwable::Role::Status::NotFound>
 
-=item 405 L<HTTP::Throwable::MethodNotAllowed>
+=item 405 L<HTTP::Throwable::Role::Status::MethodNotAllowed>
 
-=item 406 L<HTTP::Throwable::NotAcceptable>
+=item 406 L<HTTP::Throwable::Role::Status::NotAcceptable>
 
-=item 407 L<HTTP::Throwable::ProxyAuthenticationRequired>
+=item 407 L<HTTP::Throwable::Role::Status::ProxyAuthenticationRequired>
 
-=item 408 L<HTTP::Throwable::RequestTimeout>
+=item 408 L<HTTP::Throwable::Role::Status::RequestTimeout>
 
-=item 409 L<HTTP::Throwable::Conflict>
+=item 409 L<HTTP::Throwable::Role::Status::Conflict>
 
-=item 410 L<HTTP::Throwable::Gone>
+=item 410 L<HTTP::Throwable::Role::Status::Gone>
 
-=item 411 L<HTTP::Throwable::LengthRequired>
+=item 411 L<HTTP::Throwable::Role::Status::LengthRequired>
 
-=item 412 L<HTTP::Throwable::PreconditionFailed>
+=item 412 L<HTTP::Throwable::Role::Status::PreconditionFailed>
 
-=item 413 L<HTTP::Throwable::RequestEntityToLarge>
+=item 413 L<HTTP::Throwable::Role::Status::RequestEntityTooLarge>
 
-=item 414 L<HTTP::Throwable::RequestURITooLong>
+=item 414 L<HTTP::Throwable::Role::Status::RequestURITooLong>
 
-=item 415 L<HTTP::Throwable::UnsupportedMediaType>
+=item 415 L<HTTP::Throwable::Role::Status::UnsupportedMediaType>
 
-=item 416 L<HTTP::Throwable::RequestedRangeNotSatisfiable>
+=item 416 L<HTTP::Throwable::Role::Status::RequestedRangeNotSatisfiable>
 
-=item 417 L<HTTP::Throwable::ExpectationFailed>
+=item 417 L<HTTP::Throwable::Role::Status::ExpectationFailed>
 
 =back
 
@@ -304,19 +325,41 @@ to any request method.
 
 =over 4
 
-=item 500 L<HTTP::Throwable::InternalServerError>
+=item 500 L<HTTP::Throwable::Role::Status::InternalServerError>
 
-=item 501 L<HTTP::Throwable::NotImplemented>
+=item 501 L<HTTP::Throwable::Role::Status::NotImplemented>
 
-=item 502 L<HTTP::Throwable::BadGateway>
+=item 502 L<HTTP::Throwable::Role::Status::BadGateway>
 
-=item 503 L<HTTP::Throwable::ServiceUnavailable>
+=item 503 L<HTTP::Throwable::Role::Status::ServiceUnavailable>
 
-=item 504 L<HTTP::Throwable::GatewayTimeout>
+=item 504 L<HTTP::Throwable::Role::Status::GatewayTimeout>
 
-=item 505 L<HTTP::Throwable::HTTPVersionNotSupported>
+=item 505 L<HTTP::Throwable::Role::Status::HTTPVersionNotSupported>
 
 =back
+
+=head1 COMPOSING WITH HTTP::THROWABLE
+
+In general, we expect that you'll use L<HTTP::Throwable::Factory> or a
+subclass to throw exceptions.  You can still use HTTP::Throwable
+directly, though, if you keep these things in mind:
+
+HTTP::Throwable is mostly concerned about providing basic headers and a
+PSGI representation.  It doesn't worry about the body or a
+stringification.  You B<must> provide the methods C<body> and
+C<body_headers> and C<as_string>.
+
+The C<body> method returns the string (of octets) to be sent as the HTTP
+entity.  That body is passed to the C<body_headers> method, which must
+return an arrayref of headers to add to the response.  These will
+generally include the Content-Type and Content-Length headers.
+
+The C<as_string> method should return a printable string, even if the
+body is going to be empty.
+
+For convenience, these three methods are implemented by the roles
+L<HTTP::Throwable::Role::TextBody> and L<HTTP::Throwable::Role::NoBody>.
 
 =head1 SEE ALSO
 
