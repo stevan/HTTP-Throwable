@@ -30,23 +30,37 @@ sub extra_roles {
     );
 }
 
+sub roles_for_ident {
+    my ($self, $ident) = @_;
+
+    return "HTTP::Throwable::Role::Status::$ident";
+}
+
+sub roles_for_no_ident {
+    my ($self, $ident) = @_;
+
+    return qw(
+        HTTP::Throwable::Role::Generic
+        HTTP::Throwable::Role::BoringText
+    );
+}
+
+sub base_class { 'Moose::Object' }
+
 sub class_for {
     my ($self, $ident) = @_;
 
     my @roles;
     if (defined $ident) {
-        @roles = 'HTTP::Throwable::Role::Status::' . $ident;
+        @roles = $self->roles_for_ident($ident);
     } else {
-        @roles = qw(
-            HTTP::Throwable::Role::Generic
-            HTTP::Throwable::Role::BoringText
-        );
+        @roles = $self->roles_for_no_ident;
     }
 
     Class::MOP::load_class($_) for @roles;
 
     my $class = Moose::Meta::Class->create_anon_class(
-        superclasses => [ qw(Moose::Object) ],
+        superclasses => [ $self->base_class ],
         roles        => [
           $self->core_roles,
           $self->extra_roles,
