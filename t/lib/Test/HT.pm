@@ -86,6 +86,7 @@ sub ht_test {
                     );
                 }
 
+                # XXX: Gross, sorry.  -- rjbs, 2011-02-21
                 my $as_string = exists $extra->{as_string}
                               ? $extra->{as_string}
                               : $factory_class eq 'MyFactory'
@@ -98,7 +99,11 @@ sub ht_test {
                   if defined $as_string;
 
                 {
-                    my $body = exists $extra->{body} ? $extra->{body} : $status_line;
+                    my $body = exists $extra->{body}
+                              ? $extra->{body}
+                              : $status_line;
+
+                    # XXX: Another gross conditional -- rjbs, 2011-02-21
                     $body = undef if $factory_class eq 'MyFactory';
 
                     my $length = $extra->{length} // length $body // 0;
