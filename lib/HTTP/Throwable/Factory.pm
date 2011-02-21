@@ -18,7 +18,11 @@ sub new_exception {
 }
 
 sub default_roles {
-    return qw(HTTP::Throwable HTTP::Throwable::Role::TextBody);
+    return qw(
+        HTTP::Throwable
+        HTTP::Throwable::Role::TextBody
+        MooseX::StrictConstructor::Role::Object
+    );
 }
 
 sub class_for {

@@ -37,4 +37,19 @@ ht_test(
     },
 );
 
+subtest "strict constructors all around" => sub {
+  my $error = exception {
+    HTTP::Throwable::Factory->throw(MovedPermanently => {
+      location => '/foo',
+      bogus    => 123,
+    });
+  };
+
+  like(
+    $error,
+    qr{unknown attribute\(s\) init_arg passed to the constructor},
+    "http throwables have strict constructors",
+  );
+};
+
 done_testing;
