@@ -85,7 +85,8 @@ sub ht_test {
                 [
                     $extra->{code},
                     bag(
-                        'Content-Type'   => 'text/plain',
+                        (defined $body ? ('Content-Type'   => 'text/plain')
+                                       : ()),
                         'Content-Length' => $length,
                         @{ $extra->{headers} || [] },
                     ),

@@ -16,9 +16,13 @@ around 'as_psgi' => sub {
     my $next = shift;
     my $self = shift;
     my $psgi = $self->$next();
+
     # MUST NOT have a message body, see below
     Plack::Util::header_set( $psgi->[1], 'Content-Length' => 0 );
+    Plack::Util::header_remove( $psgi->[1], 'Content-Type');
+
     $psgi->[2] = [];
+
     $psgi;
 };
 
