@@ -3,8 +3,8 @@ use Moose::Role;
 use MooseX::StrictConstructor;
 
 with(
-  'HTTP::Throwable',
-  'HTTP::Throwable::Role::BoringText',
+    'HTTP::Throwable',
+    'HTTP::Throwable::Role::BoringText',
 );
 
 sub default_status_code { 410 }

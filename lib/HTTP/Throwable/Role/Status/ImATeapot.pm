@@ -2,7 +2,7 @@ package HTTP::Throwable::Role::Status::ImATeapot;
 use Moose::Role;
 
 with(
-  'HTTP::Throwable',
+    'HTTP::Throwable',
 );
 
 has 'short' => (is => 'ro', isa => 'Bool', default => 0);

@@ -13,12 +13,12 @@ for my $this (
     [ 0, 1, qr/MERELY STOUT/ ],
     [ 0, 0, qr/WITH A SPOUT/ ],
 ) {
-  ht_test(ImATeapot => { short => $this->[0], stout => $this->[1] }, {
-    code   => 418,
-    reason => q{I'm a teapot},
-    length => ignore(),
-    body   => re($this->[2]),
-  });
+    ht_test(ImATeapot => { short => $this->[0], stout => $this->[1] }, {
+        code   => 418,
+        reason => q{I'm a teapot},
+        length => ignore(),
+        body   => re($this->[2]),
+    });
 }
 
 done_testing;

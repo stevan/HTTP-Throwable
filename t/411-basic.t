@@ -6,8 +6,8 @@ use Test::More;
 use t::lib::Test::HT;
 
 ht_test(LengthRequired => {}, {
-  code   => 411,
-  reason => 'Length Required',
+    code   => 411,
+    reason => 'Length Required',
 });
 
 done_testing;

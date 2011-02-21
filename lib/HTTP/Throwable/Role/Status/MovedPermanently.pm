@@ -2,9 +2,9 @@ package HTTP::Throwable::Role::Status::MovedPermanently;
 use Moose::Role;
 
 with(
-  'HTTP::Throwable',
-  'HTTP::Throwable::Role::Redirect',
-  'HTTP::Throwable::Role::BoringText',
+    'HTTP::Throwable',
+    'HTTP::Throwable::Role::Redirect',
+    'HTTP::Throwable::Role::BoringText',
 );
 
 sub default_status_code { 301 }

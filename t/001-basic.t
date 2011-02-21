@@ -8,33 +8,33 @@ use Test::Moose;
 use t::lib::Test::HT;
 
 ht_test(
-  { status_code => 500, reason => 'Internal Server Error' },
-  {
-    code   => 500,
-    reason => 'Internal Server Error',
-    assert => sub {
-      my $e = shift;
+    { status_code => 500, reason => 'Internal Server Error' },
+    {
+        code   => 500,
+        reason => 'Internal Server Error',
+        assert => sub {
+          my $e = shift;
 
-      is(
-          "$e",
-          '500 Internal Server Error',
-          '... got the right string overload',
-      );
+          is(
+              "$e",
+              '500 Internal Server Error',
+              '... got the right string overload',
+          );
 
-      is_deeply(
-          $e->(),
-          [
-              500,
+          is_deeply(
+              $e->(),
               [
-                  'Content-Type'   => 'text/plain',
-                  'Content-Length' => 25,
+                  500,
+                  [
+                      'Content-Type'   => 'text/plain',
+                      'Content-Length' => 25,
+                  ],
+                  [ '500 Internal Server Error' ]
               ],
-              [ '500 Internal Server Error' ]
-          ],
-          '... got the right &{} overload transformation'
-      );
+              '... got the right &{} overload transformation'
+          );
+        },
     },
-  },
 );
 
 done_testing;

@@ -2,9 +2,9 @@ package HTTP::Throwable::Role::Status::TemporaryRedirect;
 use Moose::Role;
 
 with(
-  'HTTP::Throwable',
-  'HTTP::Throwable::Role::BoringText',
-  'HTTP::Throwable::Role::Redirect',
+    'HTTP::Throwable',
+    'HTTP::Throwable::Role::BoringText',
+    'HTTP::Throwable::Role::Redirect',
 );
 
 sub default_status_code { 307 }

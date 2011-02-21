@@ -13,7 +13,7 @@ use HTTP::Request::Common qw[ GET ];
 test_psgi(
     app => builder {
         mount '/old' => HTTP::Throwable::Factory->new_exception(
-          MovedPermanently => { location => '/new' }
+            MovedPermanently => { location => '/new' }
         );
         mount '/new' => sub {
             [ 200, [], ['HERE']];

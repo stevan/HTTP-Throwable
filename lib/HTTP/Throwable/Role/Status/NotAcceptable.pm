@@ -2,8 +2,8 @@ package HTTP::Throwable::Role::Status::NotAcceptable;
 use Moose::Role;
 
 with(
-  'HTTP::Throwable',
-  'HTTP::Throwable::Role::BoringText',
+    'HTTP::Throwable',
+    'HTTP::Throwable::Role::BoringText',
 );
 
 sub default_status_code { 406 }

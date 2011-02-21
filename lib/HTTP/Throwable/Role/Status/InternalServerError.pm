@@ -2,8 +2,8 @@ package HTTP::Throwable::Role::Status::InternalServerError;
 use Moose::Role;
 
 with(
-  'HTTP::Throwable',
-  'StackTrace::Auto',
+    'HTTP::Throwable',
+    'StackTrace::Auto',
 );
 
 sub default_status_code { 500 }

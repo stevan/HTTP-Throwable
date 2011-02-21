@@ -5,8 +5,8 @@ use Moose::Util::TypeConstraints;
 use List::AllUtils qw[ uniq ];
 
 with(
-  'HTTP::Throwable',
-  'HTTP::Throwable::Role::BoringText',
+    'HTTP::Throwable',
+    'HTTP::Throwable::Role::BoringText',
 );
 
 enum 'HTTP::Throwable::Type::Methods' => qw[
