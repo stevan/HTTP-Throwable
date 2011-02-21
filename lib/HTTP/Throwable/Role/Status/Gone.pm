@@ -1,6 +1,5 @@
 package HTTP::Throwable::Role::Status::Gone;
 use Moose::Role;
-use MooseX::StrictConstructor;
 
 with(
     'HTTP::Throwable',
