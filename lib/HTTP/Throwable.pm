@@ -27,12 +27,20 @@ has 'reason' => (
 
 has 'message' => ( is => 'ro', isa => 'Str' );
 
+has 'additional_headers' => ( is => 'ro', isa => 'ArrayRef' );
+
 sub build_headers {
     my ($self, $body) = @_;
-    [
-        'Content-Type'   => $self->content_type,
-        'Content-Length' => length $body,
-    ]
+
+    my @headers;
+
+    @headers = @{ $self->body_headers($body) };
+
+    if ( my $additional_headers = $self->additional_headers ) {
+        push @headers => @$additional_headers;
+    }
+
+    return \@headers;
 }
 
 sub status_line {
@@ -45,6 +53,7 @@ sub status_line {
 
 requires 'content_type';
 requires 'body';
+requires 'body_headers';
 
 sub as_string { $_[0]->body }
 

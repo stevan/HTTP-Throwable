@@ -12,18 +12,6 @@ with(
 sub default_status_code { 304 }
 sub default_reason      { 'Not Modified' }
 
-has 'additional_headers' => ( is => 'ro', isa => 'ArrayRef' );
-
-around 'build_headers' => sub {
-    my $next    = shift;
-    my $self    = shift;
-    my $headers = $self->$next( @_ );
-    if ( my $additional_headers = $self->additional_headers ) {
-        push @$headers => @$additional_headers;
-    }
-    $headers;
-};
-
 around 'as_psgi' => sub {
     my $next = shift;
     my $self = shift;

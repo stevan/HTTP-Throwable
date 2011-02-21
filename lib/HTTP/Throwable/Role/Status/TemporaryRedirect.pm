@@ -4,29 +4,11 @@ use Moose::Role;
 with(
   'HTTP::Throwable',
   'HTTP::Throwable::Role::BoringText',
+  'HTTP::Throwable::Role::Redirect',
 );
 
 sub default_status_code { 307 }
 sub default_reason      { 'Temporary Redirect' }
-
-has 'location' => (
-    is       => 'ro',
-    isa      => 'Str',
-    required => 1,
-);
-
-has 'additional_headers' => ( is => 'ro', isa => 'ArrayRef' );
-
-around 'build_headers' => sub {
-    my $next    = shift;
-    my $self    = shift;
-    my $headers = $self->$next( @_ );
-    push @$headers => ('Location' => $self->location);
-    if ( my $additional_headers = $self->additional_headers ) {
-        push @$headers => @$additional_headers;
-    }
-    $headers;
-};
 
 no Moose::Role; 1;
 

@@ -75,8 +75,10 @@ sub ht_test {
 
       my $length = $extra->{length} // length $body;
 
+      my $psgi = $exception->as_psgi;
+
       cmp_deeply(
-          $exception->as_psgi,
+          $psgi,
           [
               $extra->{code},
               bag(

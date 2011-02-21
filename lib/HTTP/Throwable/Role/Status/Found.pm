@@ -11,18 +11,6 @@ with(
 sub default_status_code { 302 }
 sub default_reason      { 'Found' }
 
-has 'additional_headers' => ( is => 'ro', isa => 'ArrayRef' );
-
-around 'build_headers' => sub {
-    my $next    = shift;
-    my $self    = shift;
-    my $headers = $self->$next( @_ );
-    if ( my $additional_headers = $self->additional_headers ) {
-        push @$headers => @$additional_headers;
-    }
-    $headers;
-};
-
 no Moose::Role; 1;
 
 __END__
