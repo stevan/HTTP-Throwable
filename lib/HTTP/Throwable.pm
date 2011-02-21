@@ -25,7 +25,11 @@ has 'reason' => (
     builder  => 'default_reason',
 );
 
-has 'message' => ( is => 'ro', isa => 'Str' );
+has 'message' => (
+    is  => 'ro',
+    isa => 'Str',
+    predicate => 'has_message',
+);
 
 has 'additional_headers' => ( is => 'ro', isa => 'ArrayRef' );
 
