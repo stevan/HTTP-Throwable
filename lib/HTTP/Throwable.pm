@@ -51,17 +51,15 @@ sub status_line {
     return $out;
 }
 
-requires 'content_type';
 requires 'body';
 requires 'body_headers';
-
-sub as_string { $_[0]->body }
+requires 'as_string';
 
 sub as_psgi {
     my $self    = shift;
     my $body    = $self->body;
     my $headers = $self->build_headers( $body );
-    [ $self->status_code, $headers, [ $body ] ];
+    [ $self->status_code, $headers, [ defined $body ? $body : () ] ];
 }
 
 sub to_app {

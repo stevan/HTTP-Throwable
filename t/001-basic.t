@@ -21,18 +21,20 @@ ht_test(
               '... got the right string overload',
           );
 
-          is_deeply(
-              $e->(),
-              [
-                  500,
+          if ($e->does('HTTP::Throwable::Role::TextBody')) {
+              is_deeply(
+                  $e->(),
                   [
-                      'Content-Type'   => 'text/plain',
-                      'Content-Length' => 25,
+                      500,
+                      [
+                          'Content-Type'   => 'text/plain',
+                          'Content-Length' => 25,
+                      ],
+                      [ '500 Internal Server Error' ]
                   ],
-                  [ '500 Internal Server Error' ]
-              ],
-              '... got the right &{} overload transformation'
-          );
+                  '... got the right &{} overload transformation'
+              );
+          }
         },
     },
 );
