@@ -34,9 +34,3 @@ to the new URI(s).
 This is a required string, which will be used in the Location header
 when creating a PSGI response.
 
-=attr additional_headers
-
-This is an optional ArrayRef containing HTTP headers that will be
-included when creating the PSGI response.
-
-
