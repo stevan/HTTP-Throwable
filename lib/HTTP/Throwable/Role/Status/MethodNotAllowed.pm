@@ -9,12 +9,14 @@ with(
     'HTTP::Throwable::Role::BoringText',
 );
 
-enum 'HTTP::Throwable::Type::Methods' => qw[
+enum 'HTTP::Throwable::Type::Method' => qw[
     OPTIONS GET HEAD
     POST PUT DELETE
     TRACE CONNECT
 ];
 
+# TODO: Consider adding a coersion to upper-case lower-cased strings and to
+# uniq the given input.  -- rjbs, 2011-02-21
 subtype 'HTTP::Throwable::Type::MethodList'
     => as 'ArrayRef'
     => where { (scalar uniq @{$_}) == (scalar @{$_}) };
@@ -24,7 +26,7 @@ sub default_reason      { 'Method Not Allowed' }
 
 has 'allow' => (
     is       => 'ro',
-    isa      => 'HTTP::Throwable::Type::MethodList[ HTTP::Throwable::Type::Methods ]',
+    isa      => 'HTTP::Throwable::Type::MethodList[ HTTP::Throwable::Type::Method ]',
     required => 1
 );
 
