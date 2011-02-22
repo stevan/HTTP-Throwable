@@ -31,6 +31,7 @@ has 'message' => (
     predicate => 'has_message',
 );
 
+# TODO: type this attribute more strongly -- rjbs, 2011-02-21
 has 'additional_headers' => ( is => 'ro', isa => 'ArrayRef' );
 
 sub build_headers {
@@ -195,6 +196,11 @@ This is the reason phrase as specified in the HTTP spec.
 
 This is an additional message string that can be supplied, which I<may>
 be used when stringifying or building an HTTP response.
+
+=attr additional_headers
+
+This is an arrayref of pairs that will be added to the headers of the
+exception when converted to a HTTP message.
 
 =method status_line
 
