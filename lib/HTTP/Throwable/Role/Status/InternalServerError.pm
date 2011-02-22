@@ -35,6 +35,6 @@ from fulfilling the request.
 =attr show_stack_trace
 
 This is a boolean attribute which by default is true and indicates
-to the C<as_string> method whether or not to show the stack trace
+to the C<text_body> method whether or not to show the stack trace
 in the output.
 
