@@ -30,10 +30,3 @@ response. Unless the request method was HEAD, the entity of the
 response SHOULD contain a short hypertext note with a hyperlink to
 the new URI(s).
 
-=attr location
-
-This is a required string, which will be used in the Location header
-when creating a PSGI response.
-
-
-

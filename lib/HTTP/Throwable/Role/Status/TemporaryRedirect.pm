@@ -32,16 +32,3 @@ understand the 307 status. Therefore, the note SHOULD contain
 the information necessary for a user to repeat the original
 request on the new URI.
 
-=attr location
-
-This is a required string, which will be used in the Location header
-when creating a PSGI response.
-
-=attr additional_headers
-
-This is an optional ArrayRef containing HTTP headers that will be
-included when creating the PSGI response.
-
-
-
-

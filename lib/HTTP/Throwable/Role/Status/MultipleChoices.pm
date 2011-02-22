@@ -52,9 +52,5 @@ cacheable unless indicated otherwise.
 This is an optional string, which, if supplied, will be used in the Location
 header when creating a PSGI response.
 
-
-
-
-
-
-
+Note that this is I<not> (at present) the location attribute provided by the
+role L<HTTP::Throwable::Role::Redirect>, which this role does not include.
