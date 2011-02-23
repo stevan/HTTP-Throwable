@@ -1,8 +1,9 @@
 Revision history for Perl extension HTTP::Throwable
 
-x.yyy
+0.010
     - NOT BACKWARD COMPATIBLE
-    - significantly rewritten, in terms of roles rather than subclasses
+    - significantly rewritten by rjbs, in terms of roles rather than subclasses
+        - re-read the documentation!
     - HTTP::Throwable::Factory is now the piece intended most for end users
     - should be significantly easier to both use and extend
 

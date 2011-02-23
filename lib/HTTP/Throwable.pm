@@ -91,9 +91,14 @@ no Moose::Role; 1;
 
 __END__
 
-# ABSTRACT: A set of strongly-typed, PSGI-friendly HTTP 1.1 exception classes
+# ABSTRACT: a set of strongly-typed, PSGI-friendly HTTP 1.1 exception libraries
 
 =head1 SYNOPSIS
+
+B<ACHTUNG>:  The interface for HTTP::Throwable has changed significantly
+between 0.005 and 0.010.  Further backward incompatibilities may appear in the
+next few weeks, as the interface is refined.  This notice will be removed when
+it has stabilized.
 
 I<Actually>, you probably want to use L<HTTP::Throwable::Factory>, so here's a
 sample of how that works:
