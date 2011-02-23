@@ -3,22 +3,17 @@
 use strict;
 use warnings;
 
+use HTTP::Throwable::Factory;
+
 use Test::More;
 use Plack::Test;
 use Plack::Builder;
 use HTTP::Request::Common qw[ GET ];
 
-BEGIN {
-    use_ok('HTTP::Throwable::MovedPermanently');
-    use_ok('HTTP::Throwable::NotFound');
-    use_ok('HTTP::Throwable::MethodNotAllowed');
-}
-
-
 test_psgi(
     app => builder {
-        mount '/old' => HTTP::Throwable::MovedPermanently->new(
-            location => '/new'
+        mount '/old' => HTTP::Throwable::Factory->new_exception(
+            MovedPermanently => { location => '/new' }
         );
         mount '/new' => sub {
             [ 200, [], ['HERE']];
@@ -46,7 +41,9 @@ test_psgi(
 );
 
 test_psgi(
-    app => HTTP::Throwable::MethodNotAllowed->new( allow => [qw[ POST PUT ]] )->to_app,
+    app => HTTP::Throwable::Factory->new_exception(
+        MethodNotAllowed => { allow => [ qw(POST PUT) ] }
+    ),
     client => sub {
         my $cb = shift;
 
@@ -63,7 +60,7 @@ test_psgi(
 );
 
 test_psgi(
-    app => HTTP::Throwable::NotFound->new,
+    app => HTTP::Throwable::Factory->new_exception('NotFound'),
     client => sub {
         my $cb = shift;
 

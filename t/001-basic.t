@@ -1,73 +1,57 @@
 #!/usr/bin/perl
-
 use strict;
 use warnings;
 
 use Test::More;
 use Test::Fatal;
 use Test::Moose;
+use t::lib::Test::HT;
 
-BEGIN {
-    use_ok('HTTP::Throwable');
-}
+ht_test(
+    { status_code => 500, reason => 'Internal Server Error' },
+    {
+        code   => 500,
+        reason => 'Internal Server Error',
+        assert => sub {
+          my $e = shift;
 
-isa_ok(exception {
-    HTTP::Throwable->throw( status_code => 500, reason => 'Internal Server Error' );
-}, 'HTTP::Throwable');
+          is(
+              "$e",
+              '500 Internal Server Error',
+              '... got the right string overload',
+          );
 
-does_ok(exception {
-    HTTP::Throwable->throw( status_code => 500, reason => 'Internal Server Error' );
-}, 'Throwable');
-
-my $e = HTTP::Throwable->new( status_code => 500, reason => 'Internal Server Error' );
-
-is($e->as_string, '500 Internal Server Error', '... got the right string transformation');
-is_deeply(
-    $e->as_psgi,
-    [
-        500,
-        [
-            'Content-Type'   => 'text/plain',
-            'Content-Length' => 25,
-        ],
-        [ '500 Internal Server Error' ]
-    ],
-    '... got the right PSGI transformation'
+          if ($e->does('HTTP::Throwable::Role::TextBody')) {
+              is_deeply(
+                  $e->(),
+                  [
+                      500,
+                      [
+                          'Content-Type'   => 'text/plain',
+                          'Content-Length' => 25,
+                      ],
+                      [ '500 Internal Server Error' ]
+                  ],
+                  '... got the right &{} overload transformation'
+              );
+          }
+        },
+    },
 );
 
-is("$e", '500 Internal Server Error', '... got the right string overload');
-is_deeply(
-    $e->(),
-    [
-        500,
-        [
-            'Content-Type'   => 'text/plain',
-            'Content-Length' => 25,
-        ],
-        [ '500 Internal Server Error' ]
-    ],
-    '... got the right &{} overload transformation'
-);
+subtest "strict constructors all around" => sub {
+  my $error = exception {
+    HTTP::Throwable::Factory->throw(MovedPermanently => {
+      location => '/foo',
+      bogus    => 123,
+    });
+  };
 
-{
-    my $e = HTTP::Throwable->new( status_code => 500, reason => 'Internal Server Error' );
-    ok( !$e->is_redirect );
-    ok( !$e->is_client_error );
-    ok( $e->is_server_error );
-}
-
-{
-    my $e = HTTP::Throwable->new( status_code => 403, reason => 'Forbidden' );
-    ok( !$e->is_redirect );
-    ok( $e->is_client_error );
-    ok( !$e->is_server_error );
-}
-
-{
-    my $e = HTTP::Throwable->new( status_code => 302, reason => 'Found' );
-    ok( $e->is_redirect );
-    ok( !$e->is_client_error );
-    ok( !$e->is_server_error );
-}
+  like(
+    $error,
+    qr{unknown attribute\(s\) init_arg passed to the constructor},
+    "http throwables have strict constructors",
+  );
+};
 
 done_testing;
